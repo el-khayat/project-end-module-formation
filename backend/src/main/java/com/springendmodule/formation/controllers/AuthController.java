@@ -2,7 +2,6 @@ package com.springendmodule.formation.controllers;
 
 
 import com.springendmodule.formation.dtos.AuthRequest;
-import com.springendmodule.formation.dtos.User;
 import com.springendmodule.formation.servies.JwtService;
 import com.springendmodule.formation.servies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,8 @@
 package com.springendmodule.formation.servies;
 
-import com.springendmodule.formation.dtos.User;
+
 import com.springendmodule.formation.dtos.UserInfoDetails;
+import com.springendmodule.formation.entities.User;
 import com.springendmodule.formation.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
