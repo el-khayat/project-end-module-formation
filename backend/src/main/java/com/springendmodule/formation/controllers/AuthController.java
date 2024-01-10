@@ -1,12 +1,11 @@
 package com.springendmodule.formation.controllers;
 
 
-import com.springendmodule.formation.models.AuthRequest;
-import com.springendmodule.formation.models.User;
+import com.springendmodule.formation.dtos.AuthRequest;
+import com.springendmodule.formation.dtos.User;
 import com.springendmodule.formation.servies.JwtService;
 import com.springendmodule.formation.servies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

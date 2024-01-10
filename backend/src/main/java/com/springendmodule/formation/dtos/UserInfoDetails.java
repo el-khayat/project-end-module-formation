@@ -1,7 +1,9 @@
-package com.springendmodule.formation.models;
+package com.springendmodule.formation.dtos;
 
+import com.springendmodule.formation.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
