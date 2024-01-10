@@ -1,4 +1,4 @@
-package com.springendmodule.formation.models;
+package com.springendmodule.formation.dtos;
 
 
 import lombok.AllArgsConstructor;
