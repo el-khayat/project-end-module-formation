@@ -1,7 +1,8 @@
 package com.springendmodule.formation.controllers;
 
 
-import com.springendmodule.formation.dtos.User;
+
+import com.springendmodule.formation.entities.User;
 import com.springendmodule.formation.servies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
