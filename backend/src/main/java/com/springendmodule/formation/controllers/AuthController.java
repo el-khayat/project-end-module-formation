@@ -33,6 +33,9 @@ public class AuthController {
     @GetMapping("/secure-end-point")
     public String welcome() {return "Welcome this endpoint is secure";}
 
+    @GetMapping("/test")
+    public String test() {return "example with git";}
+
 
     @PostMapping("/generateToken")
     public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
