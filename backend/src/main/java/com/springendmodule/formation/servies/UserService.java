@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,9 +27,24 @@ public class UserService implements UserDetailsService {
         return userDetail.map(UserInfoDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
     }
-    public String addUser(User userInfo) {
+    public User addUser(User userInfo) {
         userInfo.setPassword(encoder.encode(userInfo.getPassword()));
-        repository.save(userInfo);
-        return "User Added Successfully";
+        User user = repository.save(userInfo);
+        return user;
+    }
+    public void deleteUser(Integer id){
+        this.repository.deleteById(id);
+    }
+    public User getUserById(Integer id){
+        return repository.findById(id).get();
+    }
+    public void updateUser(User newUser){
+        if(newUser.getPassword()!=null){
+            newUser.setPassword(encoder.encode(newUser.getPassword()));
+        }
+        repository.save(newUser);
+    }
+    public List<User> getAllUsers(){
+        return repository.findAll();
     }
 }

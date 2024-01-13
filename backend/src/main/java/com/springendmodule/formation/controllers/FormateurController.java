@@ -4,7 +4,6 @@ import com.springendmodule.formation.dtos.UserDto;
 import com.springendmodule.formation.entities.User;
 import com.springendmodule.formation.mappers.UserMapper;
 import com.springendmodule.formation.servies.UserService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -15,25 +14,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/formateur")
+public class FormateurController {
 
     @Autowired UserService service;
     @Autowired UserMapper userMapper;
 
-
-
-    @PostMapping("/addUser")
+    @PreAuthorize("hasAuthority('ADMIN_ROLE,ASSISTANT_ROLE')")
+    @PostMapping("/add")
     public User addNewUser(@RequestBody UserDto userInfo) {
         User user = userMapper.fromUserDTO(userInfo);
+        user.setRoles("FORMATEUR_ROLE");
         return service.addUser(user);
     }
+
+    @PreAuthorize("hasAuthority('ADMIN_ROLE,ASSISTANT_ROLE')")
     @GetMapping("/{id}")
     public UserDto getOne(@PathVariable Integer id ){
         UserDto userDto = userMapper.fromUser(service.getUserById(id));
         return  userDto;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN_ROLE,ASSISTANT_ROLE')")
     @GetMapping("/all")
     public List<UserDto> getAllUsers(){
         List <UserDto> usersDto = new ArrayList<UserDto>();
@@ -44,12 +46,15 @@ public class UserController {
         return usersDto;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN_ROLE,ASSISTANT_ROLE')")
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody UserDto userDto){
         User user = this.userMapper.fromUserDTO(userDto);
         service.updateUser(user);
         return new ResponseEntity<String>("user updated successfully",HttpStatusCode.valueOf(200));
     }
+
+    @PreAuthorize("hasAuthority('ADMIN_ROLE,ASSISTANT_ROLE')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable Integer id){
 
