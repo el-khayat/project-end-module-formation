@@ -24,6 +24,6 @@ public class FormationApplication  implements CommandLineRunner {
 		user.setEmail("admin@gmail.com");
 		user.setPassword("admin");
 		user.setRoles("admin");
-		repository.addUser(user);
+//		repository.addUser(user);
 	}
 }

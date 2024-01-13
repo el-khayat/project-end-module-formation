@@ -14,10 +14,13 @@ import lombok.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String name;
     private String email;
     private String password;
-    private String roles;
+    private String phone;
+    private String roles; //  ADMIN_ROLE, FORMATEUR_ROLE, ASSISTANT_ROLE, EXTERNE_FORMATEUR_ROLE
+    private String keywords ;
+
 }
 
