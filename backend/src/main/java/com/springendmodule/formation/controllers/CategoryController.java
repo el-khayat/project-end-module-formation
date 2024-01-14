@@ -12,39 +12,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springendmodule.formation.dtos.FormationDTO;
-import com.springendmodule.formation.servies.FormationService;
+import com.springendmodule.formation.dtos.CategoryDTO;
+import com.springendmodule.formation.servies.CategoryService;
 
 @RestController
-@RequestMapping("/formation")
-public class FormationController {
+@RequestMapping("/category")
+public class CategoryController {
 	
 	@Autowired
-	FormationService formationService;
+	CategoryService categoryService;
 	
 	@GetMapping("/all")
-	public List<FormationDTO> getAllFormation(){
-		return formationService.getAllFormation();
+	public List<CategoryDTO> getAllCategories(){
+		return categoryService.getAllCategories();
 	}
 	
 	@GetMapping("{id}")
-	public FormationDTO getById(@PathVariable Long id) {
-		return formationService.getById(id);
-	}
-	
-	@PostMapping("/save")
-	public FormationDTO save(@RequestBody FormationDTO formationDTO) {
-		return formationService.save(formationDTO);
+	public CategoryDTO getById(@PathVariable Long id) {
+		return categoryService.getByID(id);
 	}
 	
 	@PutMapping("/update")
-	public FormationDTO update(@RequestBody FormationDTO formationDTO) {
-		return formationService.update(formationDTO);
+	public CategoryDTO update(@RequestBody CategoryDTO categoryDTO) {
+		return categoryService.update(categoryDTO);
+	}
+	
+	@PostMapping("/save")
+	public CategoryDTO save(@RequestBody CategoryDTO categoryDTO) {
+		return categoryService.save(categoryDTO);
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	public void deleteById(@PathVariable Long id) {
-		formationService.deleteById(id);
+		categoryService.deleteById(id);
 	}
 
 }

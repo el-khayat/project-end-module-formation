@@ -1,5 +1,6 @@
 package com.springendmodule.formation.servies;
 
+import java.text.Normalizer.Form;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,13 @@ public class FormationService {
 		List<FormationDTO> formationDTOs = formations.stream().map(frm -> formationMapper.fromFormation(frm))
 				.collect(Collectors.toList());
 		return formationDTOs;
+	}
+	
+	public FormationDTO getById(Long id) {
+		
+		Formation formation=formationRepository.findById(id).orElse(null);
+		return formationMapper.fromFormation(formation);
+		
 	}
 	
 	public FormationDTO save(FormationDTO formationDTO) {
