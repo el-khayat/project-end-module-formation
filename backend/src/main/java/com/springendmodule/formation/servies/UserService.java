@@ -1,8 +1,10 @@
 package com.springendmodule.formation.servies;
 
 
+import com.springendmodule.formation.dtos.UserDto;
 import com.springendmodule.formation.dtos.UserInfoDetails;
 import com.springendmodule.formation.entities.User;
+import com.springendmodule.formation.mappers.UserMapper;
 import com.springendmodule.formation.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,12 +16,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
     UserRepository repository;
     @Autowired PasswordEncoder encoder;
+    @Autowired UserMapper userMapper;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userDetail = repository.findByName(username);
@@ -49,5 +53,12 @@ public class UserService implements UserDetailsService {
     }
     public List<User> getAllUsers(){
         return repository.findAll();
+    }
+    
+    public List<UserDto> getAllFormateurs(String roles){
+    	List<User> users= repository.findByRoles(roles);
+    	List<UserDto> userDtos=users.stream().map(usr->userMapper.fromUser(usr))
+    			.collect(Collectors.toList());
+    	return userDtos;
     }
 }

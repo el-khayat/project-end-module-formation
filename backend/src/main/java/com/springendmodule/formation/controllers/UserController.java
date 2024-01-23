@@ -1,5 +1,6 @@
 package com.springendmodule.formation.controllers;
 
+import com.springendmodule.formation.dtos.UserCreateDTO;
 import com.springendmodule.formation.dtos.UserDto;
 import com.springendmodule.formation.entities.User;
 import com.springendmodule.formation.mappers.UserMapper;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     @Autowired UserService service;
@@ -24,10 +26,12 @@ public class UserController {
 
 
     @PostMapping("/addUser")
-    public User addNewUser(@RequestBody UserDto userInfo) {
-        User user = userMapper.fromUserDTO(userInfo);
+    public User addNewUser(@RequestBody UserCreateDTO userInfo) {
+        User user = userMapper.fromUserCreateDtoToUser(userInfo);
         return service.addUser(user);
     }
+    
+    
     @GetMapping("/{id}")
     public UserDto getOne(@PathVariable Integer id ){
         UserDto userDto = userMapper.fromUser(service.getUserById(id));
@@ -45,20 +49,25 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestBody UserDto userDto){
-        User user = this.userMapper.fromUserDTO(userDto);
-        service.updateUser(user);
-        return new ResponseEntity<String>("user updated successfully",HttpStatusCode.valueOf(200));
+    public ResponseEntity<User> update(@RequestBody UserCreateDTO userInfo) {
+        User user = userMapper.fromUserCreateDtoToUser(userInfo);
+        System.out.println("Received update request: " + userInfo.toString());
+        return  new ResponseEntity<>(service.addUser(user),HttpStatusCode.valueOf(200)) ;
     }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable Integer id){
-
-        service.deleteUser(id);
-        return new ResponseEntity<String>("user deleted successfully",HttpStatusCode.valueOf(200));
+      service.deleteUser(id);
+      return new ResponseEntity<String>("user deleted successfully", HttpStatusCode.valueOf(200));
     }
 
 
-
+    @GetMapping("/formateurs")
+    public ResponseEntity<List<UserDto>> getAllformateurs(){
+    	System.out.println("Request received for /user/formateurs");
+    	List<UserDto> dtos=service.getAllFormateurs("FORMATEUR_ROLE");
+    	return  new ResponseEntity<>(dtos,HttpStatusCode.valueOf(200));
+    }
 
 
     @GetMapping("/userProfile")

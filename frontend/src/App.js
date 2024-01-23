@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import LoginPage from './pages/login/loginPage';
 import HomePage from './pages/home/homePage';
+import FormateursPage from './pages/formateur/formateur';
 
 
 function App() {
@@ -21,6 +22,10 @@ function App() {
       path: "/login",
       element: <LoginPage />,
     },
+    {
+      path: "/formateurs",
+      element: <FormateursPage />,
+    }
   ]);
 
   return (
