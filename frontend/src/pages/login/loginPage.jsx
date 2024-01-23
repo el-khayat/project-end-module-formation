@@ -8,10 +8,12 @@ const LoginPage = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
+  
   const handelClikc = (e) => {
     e.preventDefault()
     console.log('click')
     login(username, password)
+    
   }
 useEffect(() => {
   const user = getUser()

@@ -7,6 +7,7 @@ import './FormateurPage.css';
 const FormateurPage = () => {
   const [formateurs, setFormateurs] = useState([]);
   const [newFormateur, setNewFormateur] = useState({
+    id: '',
     name: '',
     email: '',
     password: '',
@@ -14,6 +15,7 @@ const FormateurPage = () => {
     roles: 'FORMATEUR_ROLE',
     keywords: '',
   });
+  const [mode, setMode] = useState('CREATE'); // CREATE | UPDATE
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -47,30 +49,30 @@ const FormateurPage = () => {
     }
   };
 
-  const handleUpdateFormateur = async (formateurId) => {
+  const handleUpdateFormateur = async (formateur) => {
+    setMode('UPDATE')
+    setNewFormateur(formateur)
+    openModal()
+  };
+  const Update = async () => {
     try {
-      const updatedFormateurData = {
-        id : formateurId,
-        name: 'ZERTYU',
-        email: 'ERTYU',
-        password: '',
-        phone: '',
-        roles: 'FORMATEUR_ROLE',
-        keywords: '',
-      };
+      
 
-      const updatedFormateur = await UserFormateurService.updateFormateur(
-        updatedFormateurData
+      await UserFormateurService.updateFormateur(
+        newFormateur
       );
       setFormateurs((prevFormateurs) =>
         prevFormateurs.map((formateur) =>
-          formateur.id === formateurId ? updatedFormateur : formateur
+          formateur.id === newFormateur.id ? newFormateur : formateur
         )
       );
+      closeModal();
     } catch (error) {
       console.error('Error updating formateur:', error);
     }
   };
+
+
 
   const handleDeleteFormateur = async (formateurId) => {
     try {
@@ -100,7 +102,12 @@ const FormateurPage = () => {
         <button onClick={openModal}>Add Formateur</button>
         <Modal isOpen={isModalOpen} onClose={closeModal}>
         <div>
-        <h2>Create Formateur</h2>
+        <h2>{ mode==="CREATE"?"Create":"Update"} Formateur</h2>
+        <input
+          type="hidden"
+          value={newFormateur.id}
+          onChange={(e) => setNewFormateur({ ...newFormateur, id: e.target.value })}
+        />
         <input
           type="text"
           placeholder="Name"
@@ -125,7 +132,15 @@ const FormateurPage = () => {
           value={newFormateur.phone}
           onChange={(e) => setNewFormateur({ ...newFormateur, phone: e.target.value })}
         />
-        <button onClick={handleCreateFormateur}>Create</button>
+        {mode==="CREATE"?
+        (
+          <button onClick={ handleCreateFormateur} >Create</button>
+        ):(
+          <button onClick={ Update} >Update</button>
+        )
+        }
+        
+        
       </div>
         </Modal>
       </div>
@@ -146,7 +161,7 @@ const FormateurPage = () => {
           <td>{formateur.name}</td>
           <td>{formateur.email}</td>
           <td>
-            <button onClick={() => handleUpdateFormateur(formateur.id)}>Update</button>
+            <button onClick={() => handleUpdateFormateur(formateur)}>Update</button>
             <button onClick={() => handleDeleteFormateur(formateur.id)}>Delete</button>
           </td>
         </tr>
