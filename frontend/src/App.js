@@ -7,6 +7,7 @@ import LoginPage from './pages/login/loginPage';
 import HomePage from './pages/home/homePage';
 import FormateursPage from './pages/formateur/formateur';
 import EnterprisePage from './pages/entreprise/entreprise';
+import FormationsPage from './pages/formation/formation';
 
 
 function App() {
@@ -29,6 +30,10 @@ function App() {
     }, {
       path: "/Enterprise",
       element: <EnterprisePage />,
+    },
+    {
+      path: "/formations",
+      element: <FormationsPage />,
     }
   ]);
 
