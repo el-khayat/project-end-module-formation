@@ -1,6 +1,11 @@
 package com.springendmodule.formation.dtos;
 
 import java.util.Date;
+import java.util.List;
+
+import com.springendmodule.formation.entities.Category;
+import com.springendmodule.formation.entities.Individual;
+import com.springendmodule.formation.entities.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +29,11 @@ public class FormationDTO {
 	private String city;
 	
 	private Date date;
+	
+	private Category category;
+	
+	private User user;
+	
+	private List<Individual> individuals;
 	
 }

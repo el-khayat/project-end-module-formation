@@ -12,7 +12,10 @@ import com.springendmodule.formation.mappers.EntrepriseMapper;
 import com.springendmodule.formation.mappers.FeedbackMapper;
 import com.springendmodule.formation.repositories.FeedbackRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class FeedbackService {
 
 	@Autowired

@@ -27,8 +27,6 @@ public class IndividualController {
     @Autowired
     IndividualMapper individualMapper;
 
-
-
     @PostMapping("/add")
     public Individual addNewUser(@RequestBody IndividualDto individualDto) {
         Individual individual = individualMapper.fromIndividualDTO(individualDto);
