@@ -90,6 +90,14 @@ const FormateurPage = () => {
   };
 
   const closeModal = () => {
+    setNewFormateur({
+      name: '',
+      email: '',
+      password: '',
+      phone: '',
+      roles: 'FORMATEUR_ROLE',
+      keywords: '',
+    });
     setIsModalOpen(false);
     setMode('CREATE')
   };

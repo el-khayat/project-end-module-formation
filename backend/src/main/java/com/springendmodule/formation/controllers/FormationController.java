@@ -18,7 +18,7 @@ import com.springendmodule.formation.servies.FormationService;
 
 @RestController
 @RequestMapping("/formation")
-@CrossOrigin(origins = "*") // allow requests from this origin
+@CrossOrigin(origins = "*") 
 public class FormationController {
 	
 	@Autowired

@@ -82,6 +82,13 @@ const EntreprisePage = () => {
   };
 
   const closeModal = () => {
+    setNewEntreprise({
+      name: '',
+      address: '',
+      phone: '',
+      url: '',
+      email: '',
+    });
     setIsModalOpen(false);
     setMode('CREATE');
   };
