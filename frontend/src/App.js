@@ -6,6 +6,7 @@ import {
 import LoginPage from './pages/login/loginPage';
 import HomePage from './pages/home/homePage';
 import FormateursPage from './pages/formateur/formateur';
+import EnterprisePage from './pages/entreprise/entreprise';
 import FormationsPage from './pages/formation/formation';
 
 
@@ -26,6 +27,9 @@ function App() {
     {
       path: "/formateurs",
       element: <FormateursPage />,
+    }, {
+      path: "/Enterprise",
+      element: <EnterprisePage />,
     },
     {
       path: "/formations",
@@ -34,7 +38,7 @@ function App() {
   ]);
 
   return (
-   <RouterProvider router={router} />
+    <RouterProvider router={router} />
   );
 }
 
