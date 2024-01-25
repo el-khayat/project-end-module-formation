@@ -28,7 +28,6 @@ public class SecurityConfig {
             "/auth/generateToken",
             "/auth/addNewUser",
             "/auth/open-end-point",
-            //"/formation/all"
             
            };
     @Autowired
@@ -43,7 +42,6 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth)->auth
                         .requestMatchers(WHITE_LIST_URL)
                         .permitAll()
-                        //.requestMatchers("/formation").permitAll()
                         .requestMatchers("/**").authenticated()
 
                 ).csrf(csrf->csrf.disable())

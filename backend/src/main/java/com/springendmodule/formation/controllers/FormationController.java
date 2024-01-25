@@ -27,10 +27,6 @@ public class FormationController {
 	FormationService formationService;
 	
 	
-	//@Secured("IS_AUTHENTICATED_ANONYMOUSLY")
-	//@PreAuthorize("permitAll()") // Allows all access, even unauthenticated
-	//@PreAuthorize("isAnonymous()")
-	//@Secured({"IS_AUTHENTICATED_ANONYMOUSLY", "ROLE_ANONYMOUS"})
 	@GetMapping("/all")
 	public List<FormationDTO> getAllFormation(){
 		return formationService.getAllFormation();
@@ -46,7 +42,6 @@ public class FormationController {
 		return formationService.save(formationDTO);
 	}
 	
-	//@PreAuthorize("hasAuthority('ADMIN_ROLE,ASSISTANT_ROLE')")
 	@PutMapping("/update")
 	public FormationDTO update(@RequestBody FormationDTO formationDTO) {
 		return formationService.update(formationDTO);

@@ -1,30 +1,13 @@
-// HomeFormationsPage.js
-import React, { useState, useEffect } from 'react';
-import NavBar from '../../components/navbar/navbarComponent';
-import FormationService from '../../services/formationServices';
-import FormationTable from './FormationTable';
+import React from 'react'
+import NavBar from '../../components/navbar/navbarComponent'
 
-const HomeFormationsPage = () => {
-  const [formations, setFormations] = useState([]);
-
-  useEffect(() => {
-    FormationService.getAllFormationsNoToken()
-      .then(response => {
-        console.log('Formations data retrieved:', response);
-        setFormations(response);
-      })
-      .catch(error => {
-        console.error('Error fetching formations:', error);
-      });
-  }, []);
-
+const HomePage = () => {
   return (
     <div>
-      <NavBar />
-      <h1>Available Formations</h1>
-      <FormationTable formations={formations} enrollButton={true} />
+     <NavBar />
+      <h1> Welcome to home page</h1>
     </div>
-  );
-};
+  )
+}
 
-export default HomeFormationsPage;
+export default HomePage

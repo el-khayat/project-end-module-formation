@@ -1,4 +1,4 @@
-// formationService.js
+
 import axios from 'axios';
 
 const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
@@ -16,19 +16,7 @@ const FormationService = {
       throw error;
     }
   },
-  getAllFormationsNoToken: async () => {
-    try {
-      //const token = localStorage.getItem('token');
-      const response = await axios.get(`${BASE_URL}/formation/all`, {
-        headers: { 'Content-Type': 'application/json' },
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching formations:', error);
-      throw error;
-    }
-  },
-
+ 
   createFormation: async (formationData) => {
     try {
       console.log("this is what passing\n",formationData);
