@@ -27,7 +27,9 @@ public class SecurityConfig {
     private static final String[] WHITE_LIST_URL = {
             "/auth/generateToken",
             "/auth/addNewUser",
-            "/auth/open-end-point"
+            "/auth/open-end-point",
+            //"/formation/all"
+            
            };
     @Autowired
     JwtAuthFilter authFilter;
@@ -41,6 +43,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth)->auth
                         .requestMatchers(WHITE_LIST_URL)
                         .permitAll()
+                        //.requestMatchers("/formation").permitAll()
                         .requestMatchers("/**").authenticated()
 
                 ).csrf(csrf->csrf.disable())
