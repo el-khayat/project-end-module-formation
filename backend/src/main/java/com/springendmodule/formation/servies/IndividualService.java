@@ -49,6 +49,11 @@ public class IndividualService  {
 
         repository.save(newIndividual);
     }
+    
+    public List<Individual> getByNameAndEmail(String name,String email){
+    	return repository.findByNameAndEmail(name, email);
+    }
+    
     public List<Individual> getAllUsers(){
         return repository.findAll();
     }
