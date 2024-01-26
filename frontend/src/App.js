@@ -28,12 +28,10 @@ function App() {
     {
       path: "/formateurs",
       element: <FormateursPage />,
-<<<<<<< HEAD
     },
     {
       path: "/calendar",
       element: <CalendarPage />,
-=======
     }, {
       path: "/Enterprise",
       element: <EnterprisePage />,
@@ -41,7 +39,6 @@ function App() {
     {
       path: "/formations",
       element: <FormationsPage />,
->>>>>>> main
     }
   ]);
 

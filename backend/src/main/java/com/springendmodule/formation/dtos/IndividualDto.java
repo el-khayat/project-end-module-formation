@@ -12,7 +12,6 @@ import com.springendmodule.formation.entities.Formation;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class IndividualDto implements Serializable {
     private Integer id;
     
