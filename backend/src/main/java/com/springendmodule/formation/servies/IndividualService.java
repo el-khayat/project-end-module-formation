@@ -18,7 +18,6 @@ public class IndividualService  {
     @Autowired
     IndividualRepository repository;
 
-    @Transactional
     public Individual addIndividual(Individual individual) {
         Individual savedIndividual = repository.save(individual);
         List<Formation> formations=savedIndividual.getFormations();
@@ -38,6 +37,15 @@ public class IndividualService  {
         return repository.findById(id).get();
     }
     public void updateIndividual(Individual newIndividual){
+    	
+    	Individual oldIndividual=repository.findById(newIndividual.getId()).get();
+    	
+    	if(oldIndividual!=null) {
+    		List<Formation> formations=oldIndividual.getFormations();
+    		for(Formation f : formations) {
+    			newIndividual.getFormations().add(f);
+    		}
+    	}
 
         repository.save(newIndividual);
     }
