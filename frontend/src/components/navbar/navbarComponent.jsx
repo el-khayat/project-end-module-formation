@@ -32,7 +32,6 @@ function NavBar() {
   React.useEffect(() => {
 
         const user = getUser();
-        console.log("user", user);
         setCurrentUser(user);
         user && setRole(user.roles);
         setPages(getLinksByRole(role));

@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/formateur")
+@CrossOrigin(origins = "*")
 public class FormateurController {
 
     @Autowired UserService service;

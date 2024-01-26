@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,8 +21,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data @AllArgsConstructor @NoArgsConstructor
-public class Individual {
-	
+@Setter
+@Getter
+public class Individual implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

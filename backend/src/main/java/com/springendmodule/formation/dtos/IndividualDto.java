@@ -2,6 +2,7 @@ package com.springendmodule.formation.dtos;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -10,9 +11,9 @@ import com.springendmodule.formation.entities.Formation;
 
 @Data
 @AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
-public class IndividualDto {
-	
+public class IndividualDto implements Serializable {
     private Integer id;
     
     private String name;

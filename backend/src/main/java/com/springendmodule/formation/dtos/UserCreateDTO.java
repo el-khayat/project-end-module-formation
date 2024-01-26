@@ -9,8 +9,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @NoArgsConstructor @AllArgsConstructor @Data
-public class UserCreateDTO {
+public class UserCreateDTO implements Serializable {
 	
 	private Integer id;
 	

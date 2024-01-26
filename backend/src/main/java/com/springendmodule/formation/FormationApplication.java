@@ -23,10 +23,11 @@ public class FormationApplication  implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		System.out.println("Hello");
 		User user = new User();
+		user.setId(1);
 		user.setName("admin");
 		user.setEmail("admin@gmail.com");
 		user.setPassword("admin");
-		user.setRoles("admin");
-//		repository.addUser(user);
+		user.setRoles("ADMIN_ROLE");
+		repository.addUser(user);
 	}
 }

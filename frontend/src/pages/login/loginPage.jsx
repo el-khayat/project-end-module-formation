@@ -11,7 +11,6 @@ const LoginPage = () => {
   
   const handelClikc = (e) => {
     e.preventDefault()
-    console.log('click')
     login(username, password)
     
   }
@@ -20,7 +19,6 @@ useEffect(() => {
   if(user){
     window.location.href = '/home'
   }
-  console.log("user", user);
 })
 
   return (
@@ -55,9 +53,7 @@ useEffect(() => {
     <input type="submit" id="login" value="Login" />
     </p>
   </form>
-  <div id="create-account-wrap">
-    <p>Not a member? <a href="/asf">Create Account</a></p>
-  </div>
+  <br/>
 </div>
 </>
   )

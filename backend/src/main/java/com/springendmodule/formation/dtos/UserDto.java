@@ -7,13 +7,15 @@ import com.springendmodule.formation.entities.Formation;
 
 import lombok.*;
 
+import java.io.Serializable;
+import java.util.List;
+
 @Data
 @Getter
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class UserDto {
-	
+public class UserDto implements Serializable {
     private Integer id;
     
     private String name;
