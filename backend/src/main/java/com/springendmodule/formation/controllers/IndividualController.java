@@ -38,7 +38,13 @@ public class IndividualController {
         IndividualDto individualDto = individualMapper.fromUser(service.getIndividualById(id));
         return  individualDto;
     }
-
+    
+    @GetMapping("{name}/{email}")
+    public Individual getByNameAndEmail(@PathVariable String name,@PathVariable String email ) {
+    	return service.getByNameAndEmail(name, email).get(0);
+    }
+    
+    
     @GetMapping("/all")
     public List<IndividualDto> getAllUsers(){
         List <IndividualDto> individualsDto = new ArrayList<IndividualDto>();
