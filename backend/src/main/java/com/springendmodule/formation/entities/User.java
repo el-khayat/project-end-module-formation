@@ -1,17 +1,18 @@
 package com.springendmodule.formation.entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Data @AllArgsConstructor @NoArgsConstructor
 @Setter
 @Getter
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

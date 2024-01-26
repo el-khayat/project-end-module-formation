@@ -1,7 +1,10 @@
 package com.springendmodule.formation.dtos;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import com.springendmodule.formation.entities.Planning;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FormationDTO {
+public class FormationDTO implements Serializable {
 	
 	private Long id;
 
@@ -24,5 +27,5 @@ public class FormationDTO {
 	private String city;
 	
 	private Date date;
-	
+
 }

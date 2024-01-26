@@ -1,28 +1,28 @@
-
 import axios from 'axios';
 
 const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
-const UserFormateurService = {
-  getAllFormateurs: async () => {
+const EntrepriseService = {
+  getAllEntreprises: async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${BASE_URL}/user/formateurs`, {
+
+      const response = await axios.get(`${BASE_URL}/entreprise/all`, {
         headers: { Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json' 
       },
       });
       return response.data;
     } catch (error) {
-      console.error('Error fetching formateurs:', error);
+      console.error('Error fetching entreprises:', error);
       throw error;
     }
   },
 
-  createFormateur: async (formateurData) => {
+  createEntreprise: async (entrepriseData) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${BASE_URL}/user/addUser`, formateurData, {
+      const response = await axios.post(`${BASE_URL}/entreprise/save`, entrepriseData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -30,16 +30,16 @@ const UserFormateurService = {
       });
       return response.data;
     } catch (error) {
-      console.error('Error creating formateur:', error);
+      console.error('Error creating entreprise:', error);
       throw error;
     }
   },
 
   
-  updateFormateur: async (formateurData) => {
+  updateEntreprise: async (entrepriseData) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(`${BASE_URL}/user/update`, formateurData, {
+      const response = await axios.put(`${BASE_URL}/entreprise/update`, entrepriseData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -47,25 +47,25 @@ const UserFormateurService = {
       });
       return response.data;
     } catch (error) {
-      console.error('Error updating formateur:', error);
+      console.error('Error updating entreprise:', error);
       throw error;
     }
   },
-  deleteFormateur: async (formateurId) => {
+  deleteEntreprise: async (entrepriseId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.delete(`${BASE_URL}/user/delete/${formateurId}`, {
+      const response = await axios.delete(`${BASE_URL}/entreprise/delete/${entrepriseId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       return response.data;
     } catch (error) {
-      console.error('Error deleting formateur:', error);
+      console.error('Error deleting entreprise:', error);
       throw error;
     }
   },
 };
 
 
-export default UserFormateurService;
+export default EntrepriseService;

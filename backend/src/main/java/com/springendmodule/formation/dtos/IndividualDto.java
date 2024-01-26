@@ -2,6 +2,7 @@ package com.springendmodule.formation.dtos;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
@@ -9,7 +10,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class IndividualDto {
+public class IndividualDto implements Serializable {
     private Integer id;
     private String name;
     private String email;

@@ -6,6 +6,7 @@ import {
 import LoginPage from './pages/login/loginPage';
 import HomePage from './pages/home/homePage';
 import FormateursPage from './pages/formateur/formateur';
+import CalendarPage from './pages/canlendar/CalendarPage';
 
 
 function App() {
@@ -25,6 +26,10 @@ function App() {
     {
       path: "/formateurs",
       element: <FormateursPage />,
+    },
+    {
+      path: "/calendar",
+      element: <CalendarPage />,
     }
   ]);
 
