@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -48,11 +50,8 @@ public class Formation {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@ManyToMany(cascade = {CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
-	@JoinTable(
-			name = "formations_individuals",
-			joinColumns = @JoinColumn(name="formation_id"),
-			inverseJoinColumns = @JoinColumn(name="individual_id"))
+	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "formations")
+	@JsonIgnore
 	private List<Individual> individuals=new ArrayList<>();
 
 }

@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.*;
@@ -35,7 +36,11 @@ public class Individual {
     
     private Date birthday;
     
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "individuals")
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
+    @JoinTable(
+        name = "formations_individuals",
+        joinColumns = @JoinColumn(name = "individual_id"),
+        inverseJoinColumns = @JoinColumn(name = "formation_id"))
     private List<Formation> formations=new ArrayList<>();
     
     @OneToMany(mappedBy = "individual")
