@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import UserFormateurService from '../../services/formateurService';
 import NavBar from '../../components/navbar/navbarComponent';
-import Modal from '../../components/modal/Modal'; 
+import Modal from '../../components/modal/Modal';
 import './FormateurPage.css';
 
 const FormateurPage = () => {
@@ -56,7 +56,7 @@ const FormateurPage = () => {
   };
   const Update = async () => {
     try {
-      
+
 
       await UserFormateurService.updateFormateur(
         newFormateur
@@ -90,7 +90,16 @@ const FormateurPage = () => {
   };
 
   const closeModal = () => {
+    setNewFormateur({
+      name: '',
+      email: '',
+      password: '',
+      phone: '',
+      roles: 'FORMATEUR_ROLE',
+      keywords: '',
+    });
     setIsModalOpen(false);
+    setMode('CREATE')
   };
 
   return (
@@ -101,73 +110,83 @@ const FormateurPage = () => {
       <div>
         <button onClick={openModal}>Add Formateur</button>
         <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <div>
-        <h2>{ mode==="CREATE"?"Create":"Update"} Formateur</h2>
-        <input
-          type="hidden"
-          value={newFormateur.id}
-          onChange={(e) => setNewFormateur({ ...newFormateur, id: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Name"
-          value={newFormateur.name}
-          onChange={(e) => setNewFormateur({ ...newFormateur, name: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Email"
-          value={newFormateur.email}
-          onChange={(e) => setNewFormateur({ ...newFormateur, email: e.target.value })}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={newFormateur.password}
-          onChange={(e) => setNewFormateur({ ...newFormateur, password: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Phone"
-          value={newFormateur.phone}
-          onChange={(e) => setNewFormateur({ ...newFormateur, phone: e.target.value })}
-        />
-        {mode==="CREATE"?
-        (
-          <button onClick={ handleCreateFormateur} >Create</button>
-        ):(
-          <button onClick={ Update} >Update</button>
-        )
-        }
-        
-        
-      </div>
+          <div>
+            <h2>{mode === "CREATE" ? "Create" : "Update"} Formateur</h2>
+            <input
+              type="hidden"
+              value={newFormateur.id}
+              onChange={(e) => setNewFormateur({ ...newFormateur, id: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Name"
+              value={newFormateur.name}
+              onChange={(e) => setNewFormateur({ ...newFormateur, name: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Email"
+              value={newFormateur.email}
+              onChange={(e) => setNewFormateur({ ...newFormateur, email: e.target.value })}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={newFormateur.password}
+              onChange={(e) => setNewFormateur({ ...newFormateur, password: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Phone"
+              value={newFormateur.phone}
+              onChange={(e) => setNewFormateur({ ...newFormateur, phone: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="keywords"
+              value={newFormateur.keywords}
+              onChange={(e) => setNewFormateur({ ...newFormateur, keywords: e.target.value })}
+            />
+            {mode === "CREATE" ?
+              (
+                <button onClick={handleCreateFormateur} >Create</button>
+              ) : (
+                <button onClick={Update} >Update</button>
+              )
+            }
+
+
+          </div>
         </Modal>
       </div>
 
       <div>
         <h2>Formateurs List</h2>
         <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {formateurs.map((formateur) => (
-        <tr key={formateur.id}>
-          <td>{formateur.name}</td>
-          <td>{formateur.email}</td>
-          <td>
-            <button onClick={() => handleUpdateFormateur(formateur)}>Update</button>
-            <button onClick={() => handleDeleteFormateur(formateur.id)}>Delete</button>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Keyword</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {formateurs.map((formateur) => (
+              <tr key={formateur.id}>
+                <td>{formateur.name}</td>
+                <td>{formateur.email}</td>
+                <td>{formateur.phone}</td>
+                <td>{formateur.keywords}</td>
+                <td>
+                  <button onClick={() => handleUpdateFormateur(formateur)}>Update</button>
+                  <button onClick={() => handleDeleteFormateur(formateur.id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

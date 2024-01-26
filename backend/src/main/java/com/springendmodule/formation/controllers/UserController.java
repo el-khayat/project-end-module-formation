@@ -26,6 +26,7 @@ public class UserController {
 
 
     @PostMapping("/addUser")
+    @PreAuthorize("hasAuthority('ADMIN_ROLE')")
     public User addNewUser(@RequestBody UserCreateDTO userInfo) {
         User user = userMapper.fromUserCreateDtoToUser(userInfo);
         return service.addUser(user);
@@ -49,6 +50,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
+    @PreAuthorize("hasAuthority('ADMIN_ROLE')")
     public ResponseEntity<User> update(@RequestBody UserCreateDTO userInfo) {
         User user = userMapper.fromUserCreateDtoToUser(userInfo);
         System.out.println("Received update request: " + userInfo.toString());
@@ -56,6 +58,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('ADMIN_ROLE')")
     public ResponseEntity<String> delete(@PathVariable Integer id){
       service.deleteUser(id);
       return new ResponseEntity<String>("user deleted successfully", HttpStatusCode.valueOf(200));
@@ -63,6 +66,7 @@ public class UserController {
 
 
     @GetMapping("/formateurs")
+    @PreAuthorize("hasAuthority('ADMIN_ROLE')")
     public ResponseEntity<List<UserDto>> getAllformateurs(){
     	System.out.println("Request received for /user/formateurs");
     	List<UserDto> dtos=service.getAllFormateurs("FORMATEUR_ROLE");

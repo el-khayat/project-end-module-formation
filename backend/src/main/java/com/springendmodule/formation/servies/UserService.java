@@ -6,6 +6,9 @@ import com.springendmodule.formation.dtos.UserInfoDetails;
 import com.springendmodule.formation.entities.User;
 import com.springendmodule.formation.mappers.UserMapper;
 import com.springendmodule.formation.repositories.UserRepository;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserService implements UserDetailsService {
     @Autowired
     UserRepository repository;

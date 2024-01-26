@@ -11,7 +11,10 @@ import com.springendmodule.formation.entities.Entreprise;
 import com.springendmodule.formation.mappers.EntrepriseMapper;
 import com.springendmodule.formation.repositories.EntrepriseRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class EntrepriseService {
 
 	@Autowired

@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.springendmodule.formation.entities.Category;
+import com.springendmodule.formation.entities.Individual;
+import com.springendmodule.formation.entities.User;
+
 import com.springendmodule.formation.entities.Planning;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,5 +31,11 @@ public class FormationDTO implements Serializable {
 	private String city;
 	
 	private Date date;
-
+	
+	private Category category;
+	
+	private User user;
+	
+	private List<Individual> individuals;
+	
 }
