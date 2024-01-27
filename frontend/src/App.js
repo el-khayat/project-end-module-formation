@@ -9,6 +9,7 @@ import FormateursPage from './pages/formateur/formateur';
 import CalendarPage from './pages/canlendar/CalendarPage';
 import EnterprisePage from './pages/entreprise/entreprise';
 import FormationsPage from './pages/formation/formation';
+import FeedbackPage from './pages/feedback/feedbackPage';
 
 
 function App() {
@@ -39,6 +40,10 @@ function App() {
     {
       path: "/formations",
       element: <FormationsPage />,
+    },
+    {
+      path: "/feedback",
+      element: <FeedbackPage />,
     }
   ]);
 

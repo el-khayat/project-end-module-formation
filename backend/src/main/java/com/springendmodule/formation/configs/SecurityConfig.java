@@ -17,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.crypto.SecretKeyFactory;
+import java.security.NoSuchAlgorithmException;
 
 
 @Configuration
@@ -27,7 +29,12 @@ public class SecurityConfig {
     private static final String[] WHITE_LIST_URL = {
             "/auth/generateToken",
             "/auth/addNewUser",
-            "/auth/open-end-point"
+            "/auth/open-end-point",
+            "/formation/test-mail",
+            "/user/{id}",
+            "/individual/{id}",
+            "/feedback/exist",
+            "/feedback/save"
            };
     @Autowired
     JwtAuthFilter authFilter;
@@ -63,5 +70,9 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
+    }
+    @Bean
+    public SecretKeyFactory secretKeyFactory() throws NoSuchAlgorithmException {
+        return SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
     }
 }
