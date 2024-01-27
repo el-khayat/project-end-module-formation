@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import EntrepriseService from '../../services/entrepriseService';
 import NavBar from '../../components/navbar/navbarComponent';
 import Modal from '../../components/modal/Modal';
-import ReactPaginate from 'react-paginate';
+import { Box, Button, Paper, Typography } from '@mui/material';
+import TableComponent from '../../components/table/tableComponent';
 
 const EntreprisePage = () => {
   const [entreprises, setEntreprises] = useState([]);
@@ -16,10 +17,6 @@ const EntreprisePage = () => {
   });
   const [mode, setMode] = useState('CREATE'); // CREATE | UPDATE
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
-  const isFirstPage = currentPage === 0;
-  const isLastPage = currentPage === Math.ceil(entreprises.length / itemsPerPage) - 1;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,43 +95,21 @@ const EntreprisePage = () => {
     setMode('CREATE');
   };
 
-  const handlePageClick = (data) => {
-    setCurrentPage(data.selected);
-  };
+console.log(entreprises);
+  const columns = [
+    { id: 'id', label: '#' },
+    { id: 'name', label: 'Name' },
+    { id: 'email', label: 'Email' },
+    { id: 'phone', label: 'Phone' },
+    { id: 'address', label: 'Address' },
+    { id: 'url', label: 'url' },
 
-  const handleItemsPerPageChange = (e) => {
-    setItemsPerPage(parseInt(e.target.value, 10));
-    setCurrentPage(0);
-  };
-
-  const paginatedEntreprises = entreprises.slice(
-    currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
-  );
+  ];
 
   return (
     <div>
       <NavBar />
-      <h1>Entreprise Page</h1>
-
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', marginLeft: '20px' }}>
-          <div style={{ textAlign: "right", marginRight: "50px" }}>
-            <select
-              value={itemsPerPage}
-              onChange={handleItemsPerPageChange}
-            >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={30}>30</option>
-              <option value={100}>100</option>
-            </select>
-          </div>
-          <div>
-            <button onClick={openModal}>Add Entreprise</button>
-          </div>
-        </div>
-
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <div>
             <h2>{mode === 'CREATE' ? 'Create' : 'Update'} Entreprise</h2>
@@ -183,69 +158,19 @@ const EntreprisePage = () => {
           </div>
         </Modal>
       </div>
-
       <div>
-        <h2>Entreprises List</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Address</th>
-              <th>Phone</th>
-              <th>URL</th>
-              <th>Email</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedEntreprises.map((entreprise) => (
-              <tr key={entreprise.id}>
-                <td>{entreprise.name}</td>
-                <td>{entreprise.address}</td>
-                <td>{entreprise.phone}</td>
-                <td>{entreprise.url}</td>
-                <td>{entreprise.email}</td>
-                <td>
-                  <button onClick={() => handleUpdateEntreprise(entreprise)}>Update</button>
-                  <button onClick={() => handleDeleteEntreprise(entreprise.id)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Paper fullWidth sx={{ overflow: 'hidden', m: 2, marginTop: "100px" }}>
+          <Box sx={{ display: "flex" }}>
+            <Button variant='outlined' sx={{ m: 1 }} onClick={openModal} >
+              Add Enterprise
+            </Button>
+            <Typography variant='h6' component="h1" sx={{ m: 1, marginLeft: "400px" }}>
+              Enterprises List
+            </Typography>
+          </Box>
+          <TableComponent columns={columns} data={entreprises} handleUpdate={handleUpdateEntreprise} handleDelete={handleDeleteEntreprise} />
+        </Paper>
       </div>
-
-      <ReactPaginate
-        pageCount={Math.ceil(entreprises.length / itemsPerPage)}
-        pageRangeDisplayed={5}
-        marginPagesDisplayed={2}
-        onPageChange={handlePageClick}
-        containerClassName="pagination"
-        activeClassName="active"
-        previousLabel={
-          <button
-            className={`pagination-btn ${isFirstPage ? 'disabled' : ''}`}
-            disabled={isFirstPage}
-          >
-            ❮ Previous
-          </button>
-        }
-        nextLabel={
-          <button
-            className={`pagination-btn ${isLastPage ? 'disabled' : ''}`}
-            disabled={isLastPage}
-          >
-            Next ❯
-          </button>
-        }
-        breakLabel={'...'}
-        breakClassName={'break-me'}
-        pageClassName={'page'}
-        previousClassName={'previous'}
-        nextClassName={'next'}
-        disabledClassName={'disabled'}
-        style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', marginBottom: '20px' }}
-      />
     </div>
   );
 };
