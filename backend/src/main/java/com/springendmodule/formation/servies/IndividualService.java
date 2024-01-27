@@ -47,7 +47,7 @@ public class IndividualService  {
     		}
     	}
 
-        repository.save(newIndividual);
+    	repository.save(newIndividual);
     }
     
     public List<Individual> getByNameAndEmail(String name,String email){

@@ -51,7 +51,7 @@ public class Formation implements Serializable {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "formations")
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
 	@JsonIgnore
 	private List<Individual> individuals=new ArrayList<>();
 

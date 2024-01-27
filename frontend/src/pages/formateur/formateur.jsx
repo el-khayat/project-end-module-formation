@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import UserFormateurService from '../../services/formateurService';
 import NavBar from '../../components/navbar/navbarComponent';
 import Modal from '../../components/modal/Modal';
+import ReactPaginate from 'react-paginate';
 import './FormateurPage.css';
 
 const FormateurPage = () => {
@@ -17,6 +18,10 @@ const FormateurPage = () => {
   });
   const [mode, setMode] = useState('CREATE'); // CREATE | UPDATE
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const isFirstPage = currentPage === 0;
+  const isLastPage = currentPage === Math.ceil(formateurs.length / itemsPerPage) - 1;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,29 +55,10 @@ const FormateurPage = () => {
   };
 
   const handleUpdateFormateur = async (formateur) => {
-    setMode('UPDATE')
-    setNewFormateur(formateur)
-    openModal()
+    setMode('UPDATE');
+    setNewFormateur(formateur);
+    openModal();
   };
-  const Update = async () => {
-    try {
-
-
-      await UserFormateurService.updateFormateur(
-        newFormateur
-      );
-      setFormateurs((prevFormateurs) =>
-        prevFormateurs.map((formateur) =>
-          formateur.id === newFormateur.id ? newFormateur : formateur
-        )
-      );
-      closeModal();
-    } catch (error) {
-      console.error('Error updating formateur:', error);
-    }
-  };
-
-
 
   const handleDeleteFormateur = async (formateurId) => {
     try {
@@ -99,7 +85,35 @@ const FormateurPage = () => {
       keywords: '',
     });
     setIsModalOpen(false);
-    setMode('CREATE')
+    setMode('CREATE');
+  };
+
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected);
+  };
+
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(parseInt(e.target.value, 10));
+    setCurrentPage(0);
+  };
+
+  const paginatedFormateurs = formateurs.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
+
+  const Update = async () => {
+    try {
+      await UserFormateurService.updateFormateur(newFormateur);
+      setFormateurs((prevFormateurs) =>
+        prevFormateurs.map((formateur) =>
+          formateur.id === newFormateur.id ? newFormateur : formateur
+        )
+      );
+      closeModal();
+    } catch (error) {
+      console.error('Error updating formateur:', error);
+    }
   };
 
   return (
@@ -108,10 +122,25 @@ const FormateurPage = () => {
       <h1>Formateur Page</h1>
 
       <div>
-        <button onClick={openModal}>Add Formateur</button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', marginLeft: '20px' }}>
+          <div style={{ textAlign: "right", marginRight: "50px" }}>
+            <select
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={30}>30</option>
+              <option value={100}>100</option>
+            </select>
+          </div>
+          <div>
+            <button onClick={openModal}>Add Formateur</button>
+          </div>
+        </div>
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <div>
-            <h2>{mode === "CREATE" ? "Create" : "Update"} Formateur</h2>
+            <h2>{mode === 'CREATE' ? 'Create' : 'Update'} Formateur</h2>
             <input
               type="hidden"
               value={newFormateur.id}
@@ -147,15 +176,11 @@ const FormateurPage = () => {
               value={newFormateur.keywords}
               onChange={(e) => setNewFormateur({ ...newFormateur, keywords: e.target.value })}
             />
-            {mode === "CREATE" ?
-              (
-                <button onClick={handleCreateFormateur} >Create</button>
-              ) : (
-                <button onClick={Update} >Update</button>
-              )
-            }
-
-
+            {mode === 'CREATE' ? (
+              <button onClick={handleCreateFormateur}>Create</button>
+            ) : (
+              <button onClick={Update}>Update</button>
+            )}
           </div>
         </Modal>
       </div>
@@ -173,7 +198,7 @@ const FormateurPage = () => {
             </tr>
           </thead>
           <tbody>
-            {formateurs.map((formateur) => (
+            {paginatedFormateurs.map((formateur) => (
               <tr key={formateur.id}>
                 <td>{formateur.name}</td>
                 <td>{formateur.email}</td>
@@ -188,6 +213,38 @@ const FormateurPage = () => {
           </tbody>
         </table>
       </div>
+
+      <ReactPaginate
+        pageCount={Math.ceil(formateurs.length / itemsPerPage)}
+        pageRangeDisplayed={5}
+        marginPagesDisplayed={2}
+        onPageChange={handlePageClick}
+        containerClassName="pagination"
+        activeClassName="active"
+        previousLabel={
+          <button
+            className={`pagination-btn ${isFirstPage ? 'disabled' : ''}`}
+            disabled={isFirstPage}
+          >
+            ❮ Previous
+          </button>
+        }
+        nextLabel={
+          <button
+            className={`pagination-btn ${isLastPage ? 'disabled' : ''}`}
+            disabled={isLastPage}
+          >
+            Next ❯
+          </button>
+        }
+        breakLabel={'...'}
+        breakClassName={'break-me'}
+        pageClassName={'page'}
+        previousClassName={'previous'}
+        nextClassName={'next'}
+        disabledClassName={'disabled'}
+        style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', marginBottom: '20px' }}
+      />
     </div>
   );
 };
