@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import ReactPaginate from 'react-paginate';
 import NavBar from '../../components/navbar/navbarComponent';
-import FormationsTable from './FormationsTable';
 import FormationForm from './FormationForm';
 import FormationService from '../../services/formationServices';
 import Modal from '../../components/modal/Modal';
 import "./formation.css"
+import { Box, Button, Paper, Typography } from '@mui/material';
+import TableComponent from '../../components/table/tableComponent';
 
 const FormationsPage = () => {
   const [formations, setFormations] = useState([]);
   const [formToEdit, setFormToEdit] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
-  const isFirstPage = currentPage === 0;
-  const isLastPage = currentPage === Math.ceil(formations.length / itemsPerPage) - 1;
+
 
   useEffect(() => {
     FormationService.getAllFormations()
@@ -27,19 +24,7 @@ const FormationsPage = () => {
       });
   }, []);
 
-  const handlePageClick = (data) => {
-    setCurrentPage(data.selected);
-  };
 
-  const handleItemsPerPageChange = (e) => {
-    setItemsPerPage(parseInt(e.target.value, 10));
-    setCurrentPage(0);
-  };
-
-  const paginatedFormations = formations.slice(
-    currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
-  );
 
   const handleAddFormation = () => {
     setFormToEdit(null);
@@ -89,11 +74,20 @@ const FormationsPage = () => {
       console.error('Error submitting form data:', error);
     }
   };
+  const columns = [
+    { id: 'id', label: '#' },
+    { id: 'numberHours', label: 'Number Hours' },
+    { id: 'price', label: 'Price' },
+    { id: 'descreption', label: 'Descreption' },
+    { id: 'subject', label: 'Subject' },
+    { id: 'city', label: 'City' },
+    { id: 'date', label: 'Date',format: (value) => new Date(value).toLocaleDateString() },
+
+  ];
 
   return (
     <div>
       <NavBar />
-      <h1>List of Formations</h1>
 
       <Modal isOpen={isModalOpen} onClose={handleFormClose}>
         <FormationForm
@@ -103,60 +97,19 @@ const FormationsPage = () => {
         />
       </Modal>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px',marginLeft:"20px" }}>
-        <div style={{ textAlign: "right", marginRight: "50px" }}>
-          <select
-            value={itemsPerPage}
-            onChange={handleItemsPerPageChange}
-          >
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={30}>30</option>
-            <option value={100}>100</option>
-          </select>
-        </div>
-        <div>
-          <button onClick={handleAddFormation}>Add Formation</button>
-        </div>
-      </div>
-
-      <FormationsTable
-        formations={paginatedFormations}
-        onUpdateFormation={handleUpdateFormation}
-        onDeleteFormation={handleDeleteFormation}
-      />
-
-      <ReactPaginate
-        pageCount={Math.ceil(formations.length / itemsPerPage)}
-        pageRangeDisplayed={5}
-        marginPagesDisplayed={2}
-        onPageChange={handlePageClick}
-        containerClassName="pagination"
-        activeClassName="active"
-        previousLabel={
-          <button
-            className={`pagination-btn ${isFirstPage ? 'disabled' : ''}`}
-            disabled={isFirstPage}
-          >
-            ❮ Previous
-          </button>
-        }
-        nextLabel={
-          <button
-            className={`pagination-btn ${isLastPage ? 'disabled' : ''}`}
-            disabled={isLastPage}
-          >
-            Next ❯
-          </button>
-        }
-        breakLabel={'...'}
-        breakClassName={'break-me'}
-        pageClassName={'page'}
-        previousClassName={'previous'}
-        nextClassName={'next'}
-        disabledClassName={'disabled'}
-        style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', marginBottom: '20px' }}
-      />
+      <div>
+        <Paper fullWidth sx={{ overflow: 'hidden', m: 2, marginTop: "100px" }}>
+          <Box sx={{ display: "flex" }}>
+            <Button variant='outlined' sx={{ m: 1 }} onClick={handleAddFormation} >
+              Add Enterprise
+            </Button>
+            <Typography variant='h6' component="h1" sx={{ m: 1, marginLeft: "400px" }}>
+              Enterprises List
+            </Typography>
+          </Box>
+          <TableComponent columns={columns} data={formations} handleUpdate={handleUpdateFormation} handleDelete={handleDeleteFormation} />
+        </Paper>
+      </div> 
 
     </div>
   );
