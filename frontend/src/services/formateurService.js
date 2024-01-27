@@ -18,6 +18,19 @@ const UserFormateurService = {
       throw error;
     }
   },
+  getFormateurById: async (id) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/user/${id}`, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      return await response.data;
+    } catch (error) {
+      console.error('Error fetching formateurs:', error);
+      throw error;
+    }
+  },
 
   createFormateur: async (formateurData) => {
     try {

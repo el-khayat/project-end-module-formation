@@ -3,6 +3,7 @@ package com.springendmodule.formation.servies;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.springendmodule.formation.dtos.FeedbackResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,5 +63,10 @@ public class FeedbackService {
 		feedbackRepository.deleteById(id);
 		
 	}
-	
+	public FeedbackResponseDTO getFeedbackByCode(String code){
+		Feedback feedback = feedbackRepository.getFeedbacksByCode(code);
+		if (feedback == null)
+			return null;
+		return feedbackMapper.fromFeedbackDtoToRespnose(feedbackMapper.fromFeedback(feedback) );
+	}
 }

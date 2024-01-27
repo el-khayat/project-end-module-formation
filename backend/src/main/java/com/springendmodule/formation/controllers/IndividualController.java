@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/individual")
+@CrossOrigin(origins = "*")
 public class IndividualController {
 
     @Autowired
@@ -27,7 +28,9 @@ public class IndividualController {
     @PostMapping("/add")
     public Individual addNewUser(@RequestBody IndividualDto individualDto) {
         Individual individual = individualMapper.fromIndividualDTO(individualDto);
-        return service.addIndividual(individual);
+        Individual addedIndividual  = service.addIndividual(individual);
+        System.out.println("added individual is : "+addedIndividual);
+        return addedIndividual;
     }
 
     @GetMapping("/{id}")

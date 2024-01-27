@@ -2,7 +2,6 @@ package com.springendmodule.formation.dtos;
 
 import com.springendmodule.formation.entities.Individual;
 import com.springendmodule.formation.entities.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,7 @@ import java.io.Serializable;
 
 @NoArgsConstructor @AllArgsConstructor
 @Data
-public class FeedbackDTO implements Serializable {
+public class FeedbackCreateDTO implements Serializable {
 	
 	private Long id;
 	
@@ -21,8 +20,8 @@ public class FeedbackDTO implements Serializable {
 	private String code ;
 
 
-	private Individual individual;
+	private Integer individual;
 	
-	private User user;
+	private Integer user;
 
 }
