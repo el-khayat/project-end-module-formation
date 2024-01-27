@@ -38,7 +38,7 @@ public class Individual implements Serializable {
     
     private Date birthday;
     
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
+    @ManyToMany
     @JoinTable(
         name = "formations_individuals",
         joinColumns = @JoinColumn(name = "individual_id"),

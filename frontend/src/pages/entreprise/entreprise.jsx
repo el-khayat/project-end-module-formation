@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import EntrepriseService from '../../services/entrepriseService';
 import NavBar from '../../components/navbar/navbarComponent';
 import Modal from '../../components/modal/Modal';
+import ReactPaginate from 'react-paginate';
 
 const EntreprisePage = () => {
   const [entreprises, setEntreprises] = useState([]);
@@ -15,6 +16,10 @@ const EntreprisePage = () => {
   });
   const [mode, setMode] = useState('CREATE'); // CREATE | UPDATE
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const isFirstPage = currentPage === 0;
+  const isLastPage = currentPage === Math.ceil(entreprises.length / itemsPerPage) - 1;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,13 +98,43 @@ const EntreprisePage = () => {
     setMode('CREATE');
   };
 
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected);
+  };
+
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(parseInt(e.target.value, 10));
+    setCurrentPage(0);
+  };
+
+  const paginatedEntreprises = entreprises.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
+
   return (
     <div>
       <NavBar />
       <h1>Entreprise Page</h1>
 
       <div>
-        <button onClick={openModal}>Add Entreprise</button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', marginLeft: '20px' }}>
+          <div style={{ textAlign: "right", marginRight: "50px" }}>
+            <select
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={30}>30</option>
+              <option value={100}>100</option>
+            </select>
+          </div>
+          <div>
+            <button onClick={openModal}>Add Entreprise</button>
+          </div>
+        </div>
+
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <div>
             <h2>{mode === 'CREATE' ? 'Create' : 'Update'} Entreprise</h2>
@@ -147,7 +182,6 @@ const EntreprisePage = () => {
             }
           </div>
         </Modal>
-
       </div>
 
       <div>
@@ -164,7 +198,7 @@ const EntreprisePage = () => {
             </tr>
           </thead>
           <tbody>
-            {entreprises.map((entreprise) => (
+            {paginatedEntreprises.map((entreprise) => (
               <tr key={entreprise.id}>
                 <td>{entreprise.name}</td>
                 <td>{entreprise.address}</td>
@@ -181,6 +215,37 @@ const EntreprisePage = () => {
         </table>
       </div>
 
+      <ReactPaginate
+        pageCount={Math.ceil(entreprises.length / itemsPerPage)}
+        pageRangeDisplayed={5}
+        marginPagesDisplayed={2}
+        onPageChange={handlePageClick}
+        containerClassName="pagination"
+        activeClassName="active"
+        previousLabel={
+          <button
+            className={`pagination-btn ${isFirstPage ? 'disabled' : ''}`}
+            disabled={isFirstPage}
+          >
+            ❮ Previous
+          </button>
+        }
+        nextLabel={
+          <button
+            className={`pagination-btn ${isLastPage ? 'disabled' : ''}`}
+            disabled={isLastPage}
+          >
+            Next ❯
+          </button>
+        }
+        breakLabel={'...'}
+        breakClassName={'break-me'}
+        pageClassName={'page'}
+        previousClassName={'previous'}
+        nextClassName={'next'}
+        disabledClassName={'disabled'}
+        style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', marginBottom: '20px' }}
+      />
     </div>
   );
 };

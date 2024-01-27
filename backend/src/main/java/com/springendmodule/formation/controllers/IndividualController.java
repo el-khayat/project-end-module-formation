@@ -7,12 +7,9 @@ import com.springendmodule.formation.entities.User;
 import com.springendmodule.formation.mappers.IndividualMapper;
 import com.springendmodule.formation.mappers.UserMapper;
 import com.springendmodule.formation.servies.IndividualService;
-import com.springendmodule.formation.servies.UserService;
-import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
