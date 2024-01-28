@@ -115,7 +115,6 @@ public class PlanningController {
         List <Planning> plannings  = service.getAllPlannings();
 
         for (Planning planning : plannings){
-            System.out.println(planning);
             PlanningDto planningDto = planningMapper.fromPlanning(planning);
             planningDto.setUser(userMapper.fromUser(planning.getUser()));
             planningDto.setEntreprise(entrepriseMapper.fromEntreprise(planning.getEntreprise()));

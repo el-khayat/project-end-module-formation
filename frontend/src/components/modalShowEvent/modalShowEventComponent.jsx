@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography } from '@mui/material'
+import React from 'react'
+import { Box,  Modal, Typography } from '@mui/material'
 
-import FormationService from '../../services/formationService'
-import FormateurService from '../../services/formateurService'
-import EnterpriseService from '../../services/enterpriseService'
 
 
 

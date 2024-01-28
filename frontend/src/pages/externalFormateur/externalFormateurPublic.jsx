@@ -16,7 +16,7 @@ const FormateurPage = () => {
 
   const handleCreateFormateur = async () => {
     try {
-      const createdFormateur = await ExternalFormateurService.createFormateur(newFormateur);
+       await ExternalFormateurService.createFormateur(newFormateur);
       setNewFormateur({
         name: '',
         email: '',
