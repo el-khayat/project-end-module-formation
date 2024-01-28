@@ -43,6 +43,7 @@ public class Individual implements Serializable {
         name = "formations_individuals",
         joinColumns = @JoinColumn(name = "individual_id"),
         inverseJoinColumns = @JoinColumn(name = "formation_id"))
+    @JsonIgnore
     private List<Formation> formations=new ArrayList<>();
     
     @OneToMany(mappedBy = "individual")
