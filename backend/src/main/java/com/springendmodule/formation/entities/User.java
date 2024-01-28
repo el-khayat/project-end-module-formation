@@ -36,7 +36,6 @@ public class User implements Serializable {
     private List<Formation> formations;
     
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
     private List<Feedback> feedbacks;
 
 }
