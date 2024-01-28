@@ -35,7 +35,6 @@ public class FormationController {
 	@Autowired
 	EncryptionService encryptionService ;
 
-
 	@GetMapping("/{formation_id}/send-feedback-form")
 	public void sendFeedbackFormMail(@PathVariable Long formation_id ) throws Exception {
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ExternalFormateurService from '../../services/externalFormateurService';
 import NavBar from '../../components/navbar/navbarComponent';
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import TableComponent from '../../components/table/tableComponent';
 
 const ExternalFormateurPrivatePage = () => {
