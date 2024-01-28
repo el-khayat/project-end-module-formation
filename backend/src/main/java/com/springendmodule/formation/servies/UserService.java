@@ -39,7 +39,11 @@ public class UserService implements UserDetailsService {
         return repository.findByName(username).get();
     }
     public User addUser(User userInfo) {
-        userInfo.setPassword(encoder.encode(userInfo.getPassword()));
+    	if(!userInfo.getRoles().equals("EXTERNE_FORMATEUR_ROLE")) {
+    		userInfo.setPassword(encoder.encode(userInfo.getPassword()));
+    	}else {
+    		userInfo.setPassword(null);
+    	}
         User user = repository.save(userInfo);
         return user;
     }
@@ -55,6 +59,17 @@ public class UserService implements UserDetailsService {
         }
         repository.save(newUser);
     }
+    
+    public User updateUserByRole(Integer id,String role){
+        User user=repository.findById(id).get();
+        if(user!=null) {
+        	user.setRoles(role);
+        	return repository.save(user);
+        }
+        
+        return null;
+    }
+    
     public List<User> getAllUsers(){
         return repository.findAll();
     }

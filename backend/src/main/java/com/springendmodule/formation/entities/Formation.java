@@ -52,7 +52,6 @@ public class Formation implements Serializable {
 	private User user;
 	
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-	@JsonIgnore
 	private List<Individual> individuals=new ArrayList<>();
 
 }
