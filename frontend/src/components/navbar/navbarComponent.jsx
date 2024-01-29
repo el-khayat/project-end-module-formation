@@ -36,7 +36,7 @@ function NavBar() {
         user && setRole(user.roles);
         console.log(currentUser);
         setPages(getLinksByRole(role));
-    }, [role,currentUser])
+    }, [role])
 
 
   const handleOpenNavMenu = (event) => {

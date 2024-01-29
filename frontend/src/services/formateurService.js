@@ -6,7 +6,7 @@ const UserFormateurService = {
   getAllFormateurs: async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${BASE_URL}/user/formateurs`, {
+      const response = await axios.get(`${BASE_URL}/formateur/formateurs`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -20,7 +20,7 @@ const UserFormateurService = {
   },
   getFormateurById: async (id) => {
     try {
-      const response = await axios.get(`${BASE_URL}/user/${id}`, {
+      const response = await axios.get(`${BASE_URL}/formateur/${id}`, {
         headers: {
           'Content-Type': 'application/json'
         },
@@ -35,7 +35,7 @@ const UserFormateurService = {
   createFormateur: async (formateurData) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${BASE_URL}/user/addUser`, formateurData, {
+      const response = await axios.post(`${BASE_URL}/formateur/add`, formateurData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -51,8 +51,9 @@ const UserFormateurService = {
 
   updateFormateur: async (formateurData) => {
     try {
+      console.log("formateurData", formateurData);
       const token = localStorage.getItem('token');
-      const response = await axios.put(`${BASE_URL}/user/update`, formateurData, {
+      const response = await axios.put(`${BASE_URL}/formateur/update`, formateurData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -67,7 +68,7 @@ const UserFormateurService = {
   deleteFormateur: async (formateurId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.delete(`${BASE_URL}/user/delete/${formateurId}`, {
+      const response = await axios.delete(`${BASE_URL}/formateur/delete/${formateurId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
