@@ -43,8 +43,8 @@ const FormateurPage = () => {
 
   const handleCreateFormateur = async () => {
     try {
-      setNewFormateur({ ...newFormateur, keywords: input.join(',') });
-      const createdFormateur = await UserFormateurService.createFormateur(newFormateur);
+      const keywords = input.join(',');
+      const createdFormateur = await UserFormateurService.createFormateur({ ...newFormateur, keywords });
       setFormateurs((prevFormateurs) => [...prevFormateurs, createdFormateur]);
       setNewFormateur({
         name: '',
@@ -59,11 +59,11 @@ const FormateurPage = () => {
       console.error('Error creating formateur:', error);
     }
   };
-
+  
   const handleUpdateFormateur = async (formateur) => {
     setMode('UPDATE');
-    await setNewFormateur(formateur);
-    await setInput(formateur.keywords.split(','));
+    setNewFormateur(formateur);
+    setInput(formateur.keywords.split(','));
     console.log("input", input);
     openModal();
   };
@@ -100,10 +100,11 @@ const FormateurPage = () => {
 
   const Update = async () => {
     try {
-      await UserFormateurService.updateFormateur({ ...newFormateur, keywords: input.join(',') });
+      const keywords = input.join(',');
+      await UserFormateurService.updateFormateur({ ...newFormateur, keywords });
       setFormateurs((prevFormateurs) =>
         prevFormateurs.map((formateur) =>
-          formateur.id === newFormateur.id ? newFormateur : formateur
+          formateur.id === newFormateur.id ? { ...newFormateur, keywords } : formateur
         )
       );
       closeModal();
@@ -111,7 +112,7 @@ const FormateurPage = () => {
       console.error('Error updating formateur:', error);
     }
   };
-
+  
   const columns = [
     { id: 'id', label: '#' },
     { id: 'name', label: 'Name' },

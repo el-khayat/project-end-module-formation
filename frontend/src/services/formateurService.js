@@ -6,7 +6,7 @@ const UserFormateurService = {
   getAllFormateurs: async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${BASE_URL}/formateur/formateurs`, {
+      const response = await axios.get(`${BASE_URL}/formateur/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'

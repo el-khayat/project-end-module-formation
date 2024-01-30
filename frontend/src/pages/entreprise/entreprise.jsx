@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import EntrepriseService from '../../services/entrepriseService';
 import NavBar from '../../components/navbar/navbarComponent';
 import Modal from '../../components/modal/Modal';
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 import TableComponent from '../../components/table/tableComponent';
 
 const EntreprisePage = () => {
@@ -110,52 +110,57 @@ console.log(entreprises);
     <div>
       <NavBar />
       <div>
-        <Modal isOpen={isModalOpen} onClose={closeModal}>
-          <div>
+        <Modal isOpen={isModalOpen} onClose={closeModal} style={{ width:'500px' }}>
+          <Box  sx={{display:'flex',flexDirection:'column',width:500}} >
             <h2>{mode === 'CREATE' ? 'Create' : 'Update'} Entreprise</h2>
             <input
               type="hidden"
               value={newEntreprise.id}
               onChange={(e) => setNewEntreprise({ ...newEntreprise, id: e.target.value })}
             />
-            <input
-              type="text"
-              placeholder="Name"
+            <TextField
+              sx={{my:2}}
+              required
+              label="Name"
               value={newEntreprise.name}
               onChange={(e) => setNewEntreprise({ ...newEntreprise, name: e.target.value })}
             />
-            <input
-              type="text"
-              placeholder="Address"
+            <TextField
+            sx={{my:2}}
+            required
+              label="Address"
               value={newEntreprise.address}
               onChange={(e) => setNewEntreprise({ ...newEntreprise, address: e.target.value })}
             />
-            <input
-              type="text"
-              placeholder="Phone"
+            <TextField
+            sx={{my:2}}
+            required
+              label="Phone"
               value={newEntreprise.phone}
               onChange={(e) => setNewEntreprise({ ...newEntreprise, phone: e.target.value })}
             />
-            <input
-              type="text"
-              placeholder="URL"
+            <TextField
+            sx={{my:2}}
+            required
+              label="URL"
               value={newEntreprise.url}
               onChange={(e) => setNewEntreprise({ ...newEntreprise, url: e.target.value })}
             />
-            <input
-              type="text"
-              placeholder="Email"
+            <TextField
+             sx={{my:2}}
+             required
+              label="Email"
               value={newEntreprise.email}
               onChange={(e) => setNewEntreprise({ ...newEntreprise, email: e.target.value })}
             />
             {mode === "CREATE" ?
               (
-                <button onClick={handleCreateEntreprise} >Create</button>
+                <Button variant="contained" onClick={handleCreateEntreprise} >Create</Button>
               ) : (
-                <button onClick={handleUpdate} >Update</button>
+                <Button variant="contained" onClick={handleUpdate} >Update</Button>
               )
             }
-          </div>
+          </Box>
         </Modal>
       </div>
       <div>

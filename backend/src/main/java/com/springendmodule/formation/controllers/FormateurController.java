@@ -63,13 +63,10 @@ public class FormateurController {
 
     @PreAuthorize("hasAuthority('ADMIN_ROLE') or hasAuthority('ASSISTANT_ROLE') ")
     @GetMapping("/all")
-    public List<UserDto> getAllUsers(){
-        List <UserDto> usersDto = new ArrayList<UserDto>();
-        List <User> users  = service.getAllUsers();
-        for (User user : users){
-            usersDto.add(userMapper.fromUser(user));
-        }
-        return usersDto;
+    public ResponseEntity<List<UserDto>> getAllformateurs(){
+    	System.out.println("Request received for /user/formateurs");
+    	List<UserDto> dtos=service.getAllFormateurs("FORMATEUR_ROLE");
+    	return  new ResponseEntity<>(dtos,HttpStatusCode.valueOf(200));
     }
 
     @PreAuthorize("hasAuthority('ADMIN_ROLE') or hasAuthority('ASSISTANT_ROLE') ")
