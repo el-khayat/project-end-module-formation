@@ -36,7 +36,7 @@ const FormationsPage = () => {
 
     console.log('Update clicked for formation:', formationToUpdate);
 
-    setFormToEdit(formationToUpdate);
+    setFormToEdit(formationId);
     setIsModalOpen(true);
   };
 
@@ -88,7 +88,7 @@ const FormationsPage = () => {
   return (
     <div>
       <NavBar />
-      <Modal isOpen={isModalOpen} onClose={handleFormClose}>
+      <Modal isOpen={isModalOpen} onClose={handleFormClose} style={{ width:'500px' }}>
         <FormationForm
           formToEdit={formToEdit}
           onClose={handleFormClose}
@@ -100,10 +100,10 @@ const FormationsPage = () => {
         <Paper fullWidth sx={{ overflow: 'hidden', m: 2, marginTop: "100px" }}>
           <Box sx={{ display: "flex" }}>
             <Button variant='outlined' sx={{ m: 1 }} onClick={handleAddFormation} >
-              Add Enterprise
+              Add Formation
             </Button>
             <Typography variant='h6' component="h1" sx={{ m: 1, marginLeft: "400px" }}>
-              Enterprises List
+              Formations List
             </Typography>
           </Box>
           <TableComponent columns={columns} data={formations} handleUpdate={handleUpdateFormation} handleDelete={handleDeleteFormation} />

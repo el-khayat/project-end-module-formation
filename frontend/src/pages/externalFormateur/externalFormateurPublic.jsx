@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import ExternalFormateurService from '../../services/externalFormateurService';
 import NavBar from '../../components/navbar/navbarComponent';
 import { Box, Button, Paper, TextField, Typography } from '@mui/material';
+import KEYWORDS from '../../utils/keywordsUtil';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const FormateurPage = () => {
+  
+  const [input, setInput] = useState([]);
+  const onTagsChange = (event, values) => {
+    setInput(values);
+  };
 
   const [newFormateur, setNewFormateur] = useState({
     name: '',
@@ -16,7 +23,8 @@ const FormateurPage = () => {
 
   const handleCreateFormateur = async () => {
     try {
-       await ExternalFormateurService.createFormateur(newFormateur);
+      const keywords = input.join(',');
+      await ExternalFormateurService.createFormateur({...newFormateur , keywords});
       setNewFormateur({
         name: '',
         email: '',
@@ -71,14 +79,24 @@ const FormateurPage = () => {
               margin="normal"
               required
             />
-            <TextField
-              name="keywords"
-              label="Keywords"
-              value={newFormateur.keywords}
-              onChange={handleChange}
-              margin="normal"
-              required
-            />
+            <Autocomplete
+                multiple
+                options={KEYWORDS}
+                getOptionLabel={option => option}
+                onChange={onTagsChange}
+
+                defaultValue={input}
+
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Keywords"
+                    placeholder="Add keywords"
+                    margin="normal"
+                    fullWidth
+                  />
+                )}
+              />
           </Box>
           <Button variant="outlined" sx={{ marginTop: '20px' }} onClick={handleCreateFormateur}>
             Submet

@@ -88,8 +88,8 @@ public class UserController {
     
     @PutMapping("/update/role/{id}/{role}") 
     @PreAuthorize("hasAuthority('ADMIN_ROLE')")
-    public ResponseEntity<User> updateRole(@PathVariable Integer id,@PathVariable String role) {
-    	return new ResponseEntity<>(service.updateUserByRole(id, role),HttpStatusCode.valueOf(200));
+    public ResponseEntity<UserDto> updateRole(@PathVariable Integer id,@PathVariable String role) {
+    	return new ResponseEntity<>(userMapper.fromUser(service.updateUserByRole(id, role)) ,HttpStatusCode.valueOf(200));
     }
     
     @GetMapping("/userProfile")

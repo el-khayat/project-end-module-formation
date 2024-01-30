@@ -1,5 +1,5 @@
-// FormationForm.js
 import React, { useState } from 'react';
+import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 
 const FormationForm = ({ onSubmit, formToEdit, onClose }) => {
   const initialFormState = {
@@ -21,42 +21,80 @@ const FormationForm = ({ onSubmit, formToEdit, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Call the parent component's function to handle form submission
     onSubmit(formation);
 
-    // Reset the form or perform other actions as needed
     setFormation(initialFormState);
 
-    // Close the form
     onClose();
   };
+
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        Number of Hours:
-        <input type="number" name="numberHours" value={formation.numberHours} onChange={handleChange} />
-      </label>
-      <label>
-        Price:
-        <input type="number" name="price" value={formation.price} onChange={handleChange} />
-      </label>
-      <label>
-        Description:
-        <input type="text" name="descreption" value={formation.descreption} onChange={handleChange} />
-      </label>
-      <label>
-        Subject:
-        <input type="text" name="subject" value={formation.subject} onChange={handleChange} />
-      </label>
-      <label>
-        City:
-        <input type="text" name="city" value={formation.city} onChange={handleChange} />
-      </label>
-      <label>
-        Date:
-        <input type="date" name="date" value={formation.date} onChange={handleChange} />
-      </label>
-      <button type="submit">Create Formation</button>
+      <Box>
+        <TextField
+          required
+          label="Number of Hours:"
+          type="Number"
+          value={formation.numberHours}
+          onChange={handleChange}
+          sx={{ my: 2, width: '500px' }} 
+          InputProps={{ style: { fontSize: '16px' } }}
+        />
+      </Box>
+      <Box>
+        <TextField
+          required
+          label="Price:"
+          value={formation.price}
+          onChange={handleChange}
+          sx={{ my: 2, width: '500px' }} 
+          InputProps={{ style: { fontSize: '16px' } }}
+        />
+      </Box>
+      <Box>
+        <TextField
+          required
+          label="Description:"
+          value={formation.descreption}
+          onChange={handleChange}
+          sx={{ my: 2, width: '500px' }} 
+          InputProps={{ style: { fontSize: '16px' } }}
+        />
+      </Box>
+      <Box>
+        <TextField
+          required
+          label="Subject:"
+          value={formation.subject}
+          onChange={handleChange}
+          sx={{ my: 2, width: '500px' }} 
+          InputProps={{ style: { fontSize: '16px' } }}
+        />
+      </Box>
+      <Box>
+        <TextField
+          required
+          label="City:"
+          value={formation.city}
+          onChange={handleChange}
+          sx={{ my: 2, width: '500px' }} 
+          InputProps={{ style: { fontSize: '16px' } }}
+        />
+      </Box>
+      <Box>
+        <TextField
+          required
+          label="Date:"
+          type="date"
+          value={formation.date}
+          onChange={handleChange}
+          sx={{ my: 2, width: '500px' }} 
+          InputProps={{ style: { fontSize: '16px' } }}
+        />
+      </Box>
+      <Button type="submit" variant="contained" sx={{ my: 2, width: '500px' }} >
+        Create Formation
+      </Button>
     </form>
   );
 };
