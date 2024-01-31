@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/assistant")
+@CrossOrigin(origins = "*")
 public class AssistantController {
 
     @Autowired UserService service;
