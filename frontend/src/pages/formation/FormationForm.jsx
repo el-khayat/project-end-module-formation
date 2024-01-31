@@ -1,7 +1,8 @@
-// FormationForm.js
-import React, { useState } from 'react';
 
-const FormationForm = ({ onSubmit, formToEdit, onClose }) => {
+import React, { useState } from 'react';
+import { Box, Button, Paper, TextField, Typography } from '@mui/material';
+
+const FormationForm = ({ onSubmit, formToEdit, onClose, availableFormateurs }) => {
   const initialFormState = {
     numberHours: 0,
     price: 0,
@@ -9,6 +10,7 @@ const FormationForm = ({ onSubmit, formToEdit, onClose }) => {
     subject: '',
     city: '',
     date: new Date().toISOString().split('T')[0],
+    selectedFormateur: '', // New state to hold the selected formateur
   };
 
   const [formation, setFormation] = useState(formToEdit || initialFormState);
@@ -20,16 +22,14 @@ const FormationForm = ({ onSubmit, formToEdit, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     // Call the parent component's function to handle form submission
     onSubmit(formation);
-
     // Reset the form or perform other actions as needed
     setFormation(initialFormState);
-
     // Close the form
     onClose();
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <label>
@@ -49,6 +49,10 @@ const FormationForm = ({ onSubmit, formToEdit, onClose }) => {
         <input type="text" name="subject" value={formation.subject} onChange={handleChange} />
       </label>
       <label>
+        max Members:
+        <input type="number" name="totalMembers" value={formation.totalMembers} onChange={handleChange} />
+      </label>
+      <label>
         City:
         <input type="text" name="city" value={formation.city} onChange={handleChange} />
       </label>
@@ -56,7 +60,18 @@ const FormationForm = ({ onSubmit, formToEdit, onClose }) => {
         Date:
         <input type="date" name="date" value={formation.date} onChange={handleChange} />
       </label>
-      <button type="submit">Create Formation</button>
+      <label>
+        Select Formateur: 
+        <select name="selectedFormateur" value={formation.selectedFormateur} onChange={handleChange}>
+          <option value="">Select Formateur</option> {/* Default empty option */}
+          {/* Map over available formateurs and generate options */}
+          {availableFormateurs.map((formateur) => (
+            <option key={formateur.id} value={formateur.id}>{formateur.name} - {formateur.keyword}</option>
+          ))}
+        </select>
+      </label>
+      <button type="submit">{formToEdit ? 'Update Formation' : 'Create Formation'}</button>
+
     </form>
   );
 };

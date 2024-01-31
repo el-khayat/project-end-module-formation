@@ -1,5 +1,6 @@
 package com.springendmodule.formation.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,13 +24,16 @@ public class Feedback implements Serializable {
 	private String note;
 	
 	private String message;
+	private String code ;
 	
 	@ManyToOne
 	@JoinColumn(name = "individual_id")
+	@JsonIgnore
 	private Individual individual;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private User user;
 
 }

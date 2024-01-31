@@ -19,15 +19,23 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class UserService implements UserDetailsService {
+	
     @Autowired
     UserRepository repository;
+    
     @Autowired PasswordEncoder encoder;
+    
     @Autowired UserMapper userMapper;
+    
+    @Autowired
+    EmailService emailService ;
+    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userDetail = repository.findByName(username);
@@ -39,7 +47,11 @@ public class UserService implements UserDetailsService {
         return repository.findByName(username).get();
     }
     public User addUser(User userInfo) {
-        userInfo.setPassword(encoder.encode(userInfo.getPassword()));
+    	if(!userInfo.getRoles().equals("EXTERNE_FORMATEUR_ROLE")) {
+    		userInfo.setPassword(encoder.encode(userInfo.getPassword()));
+    	}else {
+    		userInfo.setPassword(null);
+    	}
         User user = repository.save(userInfo);
         return user;
     }
@@ -55,6 +67,38 @@ public class UserService implements UserDetailsService {
         }
         repository.save(newUser);
     }
+    
+    public User updateUserByRole(Integer id,String role){
+        User user=repository.findById(id).get();
+        
+        String randomPassword = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
+        user.setPassword(encoder.encode(randomPassword));
+        
+		if (user != null) {
+	        String body = "Hello Mr."+user.getName()+",\n"+
+        		"\n" +
+                "We trust this email finds you in good health.\n" +
+                "\n" +
+                "We are thrilled to inform you that you are now one of our trainers, and your account on our platform is ready. Please find below your login information:\n" +
+                "\n" +
+                "Username: "+user.getName()+"\n" +
+                "Password: "+randomPassword+"\n\n" +
+                "Best regards,\n" +
+                "\n" +
+                "Mohamed EL KHAYAT\n" +
+                "ADMINISTRATION DEPARTEMENT\n" +
+                " My Center \n" +
+                "\n" +
+                "Note: This is an automated email. Please don't reply to it." ;
+        emailService.sendSimpleEmail(user.getEmail(),"Congratulation Now your are a trainer in our Center",body);
+        
+        	user.setRoles(role);
+        	return repository.save(user);
+        }
+		
+        return null;
+    }
+    
     public List<User> getAllUsers(){
         return repository.findAll();
     }

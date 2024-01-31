@@ -34,6 +34,7 @@ function NavBar() {
         const user = getUser();
         setCurrentUser(user);
         user && setRole(user.roles);
+        console.log(currentUser);
         setPages(getLinksByRole(role));
     }, [role])
 

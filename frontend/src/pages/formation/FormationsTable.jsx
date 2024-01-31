@@ -1,4 +1,3 @@
-// FormationsTable.jsx
 import React from 'react';
 
 const FormationsTable = ({ formations, onUpdateFormation, onDeleteFormation }) => {

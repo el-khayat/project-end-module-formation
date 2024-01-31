@@ -16,10 +16,32 @@ const FormationService = {
       throw error;
     }
   },
- 
+  getAllFormationsNoToken: async () => {
+    try {
+      //const token = localStorage.getItem('token');
+      const response = await axios.get(`${BASE_URL}/formation/all`, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching formations:', error);
+      throw error;
+    }
+  },
+  getAvailableFormationsNoToken: async () => {
+    try {
+      //const token = localStorage.getItem('token');
+      const response = await axios.get(`${BASE_URL}/formation/available`, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching formations:', error);
+      throw error;
+    }
+  },
   createFormation: async (formationData) => {
     try {
-      console.log("this is what passing\n",formationData);
       const token = localStorage.getItem('token');
       const response = await axios.post(`${BASE_URL}/formation/save`, formationData, {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },

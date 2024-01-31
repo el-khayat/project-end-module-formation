@@ -43,6 +43,8 @@ public class Formation implements Serializable {
 	
 	private Date date;
 	
+	private int totalMembers;
+	
 	@ManyToOne
 	@JoinColumn(name="category_id" )
 	private Category category;
@@ -51,8 +53,8 @@ public class Formation implements Serializable {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-	@JsonIgnore
+
+	@ManyToMany(mappedBy = "formations")
 	private List<Individual> individuals=new ArrayList<>();
 
 }

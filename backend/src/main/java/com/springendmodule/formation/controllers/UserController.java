@@ -5,7 +5,6 @@ import com.springendmodule.formation.dtos.UserDto;
 import com.springendmodule.formation.entities.User;
 import com.springendmodule.formation.mappers.UserMapper;
 import com.springendmodule.formation.servies.UserService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class UserController {
 
     @Autowired UserService service;
@@ -32,6 +31,12 @@ public class UserController {
         return service.addUser(user);
     }
     
+    
+    @PostMapping("formateur/eternal/add")
+    public ResponseEntity<User> addExternalFormateur(@RequestBody UserCreateDTO userInfo) {
+        User user = userMapper.fromUserCreateDtoToUser(userInfo);
+        return new ResponseEntity<>(service.addUser(user),HttpStatusCode.valueOf(200));
+    }
     
     @GetMapping("/{id}")
     public UserDto getOne(@PathVariable Integer id ){
@@ -74,6 +79,19 @@ public class UserController {
     }
 
 
+    @GetMapping("/formateurs/external")
+    @PreAuthorize("hasAuthority('ADMIN_ROLE') or hasAuthority('ASSISTANT_ROLE')")
+    public ResponseEntity<List<UserDto>> getAllExternalFormateurs(){
+    	List<UserDto> dtos=service.getAllFormateurs("EXTERNE_FORMATEUR_ROLE");
+    	return  new ResponseEntity<>(dtos,HttpStatusCode.valueOf(200));
+    }
+    
+    @PutMapping("/update/role/{id}/{role}") 
+    @PreAuthorize("hasAuthority('ADMIN_ROLE')")
+    public ResponseEntity<UserDto> updateRole(@PathVariable Integer id,@PathVariable String role) {
+    	return new ResponseEntity<>(userMapper.fromUser(service.updateUserByRole(id, role)) ,HttpStatusCode.valueOf(200));
+    }
+    
     @GetMapping("/userProfile")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public String userProfile() { return "Welcome to User Profile"; }

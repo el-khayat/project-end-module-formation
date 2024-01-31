@@ -7,5 +7,5 @@ import com.springendmodule.formation.entities.Feedback;
 
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Long>{
-
+    public Feedback getFeedbacksByCode(String code);
 }

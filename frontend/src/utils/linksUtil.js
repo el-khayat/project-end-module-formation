@@ -31,9 +31,15 @@ const linkEnterprise ={
 const linkJoinUs ={
     name : 'Join Us',
     path : '/joinus',
-    roles : ['ADMIN_ROLE','ASSISTANT_ROLE']
+    roles : []
 }
 const linkCalendar ={
+    name : 'External Formateur',
+    path : '/formateurs/external',
+    roles : ['ADMIN_ROLE','ASSISTANT_ROLE']
+}
+
+const linkExternalFormateur ={
     name : 'Calendar',
     path : '/calendar',
     roles : ['ADMIN_ROLE','ASSISTANT_ROLE']
@@ -43,10 +49,10 @@ export function getLinksByRole(role){
     let links = [];
     switch (role) {
         case 'ADMIN_ROLE':
-            links = [linkHome, linkFormateurs, linkFormations, linkAssistant, linkEnterprise,linkCalendar];
+            links = [linkHome, linkFormateurs, linkFormations, linkAssistant, linkEnterprise,linkCalendar,linkExternalFormateur];
             break;
         case 'ASSISTANT_ROLE':
-            links = [linkHome, linkFormateurs, linkFormations, linkEnterprise,linkCalendar];
+            links = [linkHome, linkFormateurs, linkFormations, linkEnterprise,linkCalendar,linkExternalFormateur];
             break;
         case 'user':
             links = [linkHome, linkJoinUs];

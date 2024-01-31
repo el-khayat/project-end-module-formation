@@ -3,8 +3,10 @@ import UserFormateurService from '../../services/formateurService';
 import NavBar from '../../components/navbar/navbarComponent';
 import Modal from '../../components/modal/Modal';
 import './FormateurPage.css';
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 import TableComponent from '../../components/table/tableComponent';
+import Autocomplete from '@mui/material/Autocomplete';
+import KEYWORDS from '../../utils/keywordsUtil';
 
 const FormateurPage = () => {
 
@@ -13,7 +15,6 @@ const FormateurPage = () => {
     id: '',
     name: '',
     email: '',
-    password: '',
     phone: '',
     roles: 'FORMATEUR_ROLE',
     keywords: '',
@@ -21,7 +22,11 @@ const FormateurPage = () => {
 
   const [mode, setMode] = useState('CREATE'); // CREATE | UPDATE
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  
+  const [input, setInput] = useState([]);
+  const onTagsChange = (event, values) => {
+    setInput(values);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +43,8 @@ const FormateurPage = () => {
 
   const handleCreateFormateur = async () => {
     try {
-      const createdFormateur = await UserFormateurService.createFormateur(newFormateur);
+      const keywords = input.join(',');
+      const createdFormateur = await UserFormateurService.createFormateur({ ...newFormateur, keywords });
       setFormateurs((prevFormateurs) => [...prevFormateurs, createdFormateur]);
       setNewFormateur({
         name: '',
@@ -53,10 +59,12 @@ const FormateurPage = () => {
       console.error('Error creating formateur:', error);
     }
   };
-
+  
   const handleUpdateFormateur = async (formateur) => {
     setMode('UPDATE');
     setNewFormateur(formateur);
+    setInput(formateur.keywords.split(','));
+    console.log("input", input);
     openModal();
   };
 
@@ -92,10 +100,11 @@ const FormateurPage = () => {
 
   const Update = async () => {
     try {
-      await UserFormateurService.updateFormateur(newFormateur);
+      const keywords = input.join(',');
+      await UserFormateurService.updateFormateur({ ...newFormateur, keywords });
       setFormateurs((prevFormateurs) =>
         prevFormateurs.map((formateur) =>
-          formateur.id === newFormateur.id ? newFormateur : formateur
+          formateur.id === newFormateur.id ? { ...newFormateur, keywords } : formateur
         )
       );
       closeModal();
@@ -103,66 +112,80 @@ const FormateurPage = () => {
       console.error('Error updating formateur:', error);
     }
   };
-
+  
   const columns = [
     { id: 'id', label: '#' },
     { id: 'name', label: 'Name' },
     { id: 'email', label: 'Email' },
     { id: 'phone', label: 'Phone' },
     { id: 'keywords', label: 'Keyword' },
-
   ];
-
-
+  
   return (
     <div>
       <NavBar />
       <div>
-        
-        <Modal isOpen={isModalOpen} onClose={closeModal} style={{zIndex:3}}>
-          <div>
+
+        <Modal isOpen={isModalOpen} onClose={closeModal} style={{ width:'500px' }}>
+          <Box  sx={{display:'flex',flexDirection:'column',width:500}} >
             <h2>{mode === 'CREATE' ? 'Create' : 'Update'} Formateur</h2>
             <input
               type="hidden"
               value={newFormateur.id}
               onChange={(e) => setNewFormateur({ ...newFormateur, id: e.target.value })}
             />
-            <input
-              type="text"
-              placeholder="Name"
+
+            <TextField
+            sx={{my:2}}
+              required
+              label="Name"
               value={newFormateur.name}
               onChange={(e) => setNewFormateur({ ...newFormateur, name: e.target.value })}
             />
-            <input
-              type="text"
-              placeholder="Email"
+
+            <TextField
+            sx={{my:2}}
+              required
+              label="Email"
               value={newFormateur.email}
               onChange={(e) => setNewFormateur({ ...newFormateur, email: e.target.value })}
             />
-            <input
-              type="password"
-              placeholder="Password"
-              value={newFormateur.password}
-              onChange={(e) => setNewFormateur({ ...newFormateur, password: e.target.value })}
-            />
-            <input
-              type="text"
-              placeholder="Phone"
+
+            <TextField
+            sx={{my:2}}
+              required
+              label="Phone"
               value={newFormateur.phone}
               onChange={(e) => setNewFormateur({ ...newFormateur, phone: e.target.value })}
             />
-            <input
-              type="text"
-              placeholder="keywords"
-              value={newFormateur.keywords}
-              onChange={(e) => setNewFormateur({ ...newFormateur, keywords: e.target.value })}
-            />
+
+            
+            <Autocomplete
+                multiple
+                options={KEYWORDS}
+                getOptionLabel={option => option}
+                onChange={onTagsChange}
+
+                defaultValue={input}
+
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    // variant="standard"
+                    label="Keywords"
+                    placeholder="Add keywords"
+                    margin="normal"
+                    fullWidth
+                  />
+                )}
+              />
+
             {mode === 'CREATE' ? (
-              <button onClick={handleCreateFormateur}>Create</button>
+              <Button variant="contained" onClick={handleCreateFormateur}>Create</Button>
             ) : (
-              <button onClick={Update}>Update</button>
+              <Button variant="contained" onClick={Update}>Update</Button>
             )}
-          </div>
+          </Box>
         </Modal>
       </div>
       <div>

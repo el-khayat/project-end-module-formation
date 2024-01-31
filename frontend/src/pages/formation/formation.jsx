@@ -6,21 +6,34 @@ import Modal from '../../components/modal/Modal';
 import "./formation.css"
 import { Box, Button, Paper, Typography } from '@mui/material';
 import TableComponent from '../../components/table/tableComponent';
+import UserFormateurService from '../../services/formateurService';
+
 
 const FormationsPage = () => {
   const [formations, setFormations] = useState([]);
   const [formToEdit, setFormToEdit] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formateurs, setFormateurs] = useState([]);
+
 
 
   useEffect(() => {
     FormationService.getAllFormations()
       .then(response => {
-        console.log('Formations data retrieved:', response);
         setFormations(response);
       })
       .catch(error => {
         console.error('Error fetching formations:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    UserFormateurService.getAllFormateurs()
+      .then(response => {
+        setFormateurs(response);
+      })
+      .catch(error => {
+        console.error('Error fetching formateurs:', error);
       });
   }, []);
 
@@ -32,18 +45,13 @@ const FormationsPage = () => {
   };
 
   const handleUpdateFormation = (formationId) => {
-    const formationToUpdate = formations.find((formation) => formation.id === formationId);
-
-    console.log('Update clicked for formation:', formationToUpdate);
-
-    setFormToEdit(formationToUpdate);
+      setFormToEdit(formationId);
     setIsModalOpen(true);
   };
 
   const handleDeleteFormation = (formationId) => {
     FormationService.deleteFormation(formationId)
       .then(() => {
-        console.log('Formation deleted:', formationId);
         setFormations(prevFormations =>
           prevFormations.filter(formation => formation.id !== formationId)
         );
@@ -59,8 +67,11 @@ const FormationsPage = () => {
 
   const handleFormSubmit = async (formData) => {
     try {
+      if (formData.selectedFormateur) {
+        formData.user = { id: formData.selectedFormateur };
+      }
+  
       if (formToEdit) {
-        console.log('Update the record');
         await FormationService.updateFormation(formData);
       } else {
         console.log('Create new record');
@@ -82,18 +93,19 @@ const FormationsPage = () => {
     { id: 'subject', label: 'Subject' },
     { id: 'city', label: 'City' },
     { id: 'date', label: 'Date',format: (value) => new Date(value).toLocaleDateString() },
+    { id: 'user', label: 'Formateur' ,format: (value) => value ? value.name : 'No Formateur'},
 
   ];
 
   return (
     <div>
       <NavBar />
-
-      <Modal isOpen={isModalOpen} onClose={handleFormClose}>
+      <Modal isOpen={isModalOpen} onClose={handleFormClose} style={{ width:'500px' }}>
         <FormationForm
           formToEdit={formToEdit}
           onClose={handleFormClose}
           onSubmit={handleFormSubmit}
+          availableFormateurs = {formateurs}
         />
       </Modal>
 
@@ -101,10 +113,10 @@ const FormationsPage = () => {
         <Paper fullWidth sx={{ overflow: 'hidden', m: 2, marginTop: "100px" }}>
           <Box sx={{ display: "flex" }}>
             <Button variant='outlined' sx={{ m: 1 }} onClick={handleAddFormation} >
-              Add Enterprise
+              Add Formation
             </Button>
             <Typography variant='h6' component="h1" sx={{ m: 1, marginLeft: "400px" }}>
-              Enterprises List
+              Formations List
             </Typography>
           </Box>
           <TableComponent columns={columns} data={formations} handleUpdate={handleUpdateFormation} handleDelete={handleDeleteFormation} />
