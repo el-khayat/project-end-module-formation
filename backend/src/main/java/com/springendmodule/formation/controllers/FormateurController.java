@@ -54,6 +54,7 @@ public class FormateurController {
         return service.addUser(user);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN_ROLE') or hasAuthority('ASSISTANT_ROLE') ")
     @GetMapping("/{id}")
     public UserDto getOne(@PathVariable Integer id ){
         UserDto userDto = userMapper.fromUser(service.getUserById(id));

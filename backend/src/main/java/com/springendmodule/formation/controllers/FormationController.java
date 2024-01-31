@@ -54,6 +54,7 @@ public class FormationController {
 
 	@GetMapping("/test-mail")
 	public void testMail() throws Exception {
+
 		/*
 		*
 		* 	this method just for a simple test
@@ -64,7 +65,7 @@ public class FormationController {
 		Long formation_id = 2l;
 
 			String subject = "Feedback on the Formateur";
-			String token = "formateurId="+6+"&individualId="+7+"&formationId="+formation_id ;
+			String token = "formateurId="+3+"&individualId="+6+"&formationId="+formation_id ;
 			token = encryptionService.encrypt(token);
 			String link = "http://localhost:3000/feedback?token="+token;
 			String body = "please let a feedback on your foramteur via the link below \n"+link;
