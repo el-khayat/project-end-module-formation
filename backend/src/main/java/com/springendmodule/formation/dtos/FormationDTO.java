@@ -36,6 +36,8 @@ public class FormationDTO implements Serializable {
 	
 	private User user;
 	
+	private int totalMembers;
+	
 	private List<Individual> individuals;
 	
 }

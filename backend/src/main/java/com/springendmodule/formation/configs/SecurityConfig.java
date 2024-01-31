@@ -27,7 +27,10 @@ public class SecurityConfig {
     private static final String[] WHITE_LIST_URL = {
             "/auth/generateToken",
             "/auth/addNewUser",
-            "/auth/open-end-point"
+            "/auth/open-end-point",
+            "/formation/available",
+            "/individual/*",
+            "/individual/*/*"
            };
     @Autowired
     JwtAuthFilter authFilter;

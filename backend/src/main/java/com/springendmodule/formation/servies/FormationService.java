@@ -1,5 +1,6 @@
 package com.springendmodule.formation.servies;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,21 @@ public class FormationService {
 		return formationDTOs;
 	}
 	
+	public List<FormationDTO> getAvailableFormation(){
+		List<Formation> formations=formationRepository.findAll();
+		List<Formation> availableFormations = new ArrayList<>(); 
+		for(Formation formation:formations)
+		{
+			if(formation.getIndividuals().size() < formation.getTotalMembers())
+			{
+				availableFormations.add(formation);
+			}
+		}
+		List<FormationDTO> formationDTOs = availableFormations.stream().map(frm -> formationMapper.fromFormation(frm))
+				.collect(Collectors.toList());
+		return formationDTOs;
+	}
+	
 	public FormationDTO getById(Long id) {
 		
 		Formation formation=formationRepository.findById(id).orElse(null);
@@ -46,7 +62,9 @@ public class FormationService {
 	}
 	
 	public void deleteById(Long id) {
-		
+		Formation formation=formationRepository.findById(id).orElse(null);
+		formation.getIndividuals().forEach(individual -> individual.getFormations().remove(formation));
+		formation.getIndividuals().clear();
 		formationRepository.deleteById(id);
 		
 	}

@@ -20,12 +20,6 @@ public class IndividualService  {
 
     public Individual addIndividual(Individual individual) {
         Individual savedIndividual = repository.save(individual);
-        List<Formation> formations=savedIndividual.getFormations();
-        System.out.println(formations.size());
-        for(Formation f:formations) {
-        	
-        	System.out.println(f.getId());
-        }
         return savedIndividual;
     }
 
