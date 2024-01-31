@@ -5,6 +5,7 @@ import com.springendmodule.formation.dtos.UserDto;
 import com.springendmodule.formation.dtos.UserInfoDetails;
 import com.springendmodule.formation.entities.User;
 import com.springendmodule.formation.mappers.UserMapper;
+import com.springendmodule.formation.repositories.FormationRepository;
 import com.springendmodule.formation.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -25,6 +26,9 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class UserService implements UserDetailsService {
+	
+	@Autowired
+	FormationRepository formationRepository;
 	
     @Autowired
     UserRepository repository;
@@ -56,6 +60,15 @@ public class UserService implements UserDetailsService {
         return user;
     }
     public void deleteUser(Integer id){
+    	
+    	User user = repository.findById(id).get();
+    	 // Update the associations and save formations
+        user.getFormations().forEach(formation -> {
+            formation.setUser(null); // Clear the association
+            formationRepository.save(formation); // Update the formation record
+        });
+        // Clear the formations list from the user entity
+        user.getFormations().clear();
         this.repository.deleteById(id);
     }
     public User getUserById(Integer id){
