@@ -30,10 +30,12 @@ public class SecurityConfig {
             "/auth/generateToken",
             "/auth/addNewUser",
             "/auth/open-end-point",
+            "/formation/available",
+            "/individual/*",
+            "/individual/*/*",
             "/user/formateur/eternal/add",
             "/formation/test-mail",
             "/user/{id}",
-            "/individual/{id}",
             "/feedback/exist",
             "/feedback/save"
            };

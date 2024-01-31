@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 
-const FormationForm = ({ onSubmit, formToEdit, onClose }) => {
+const FormationForm = ({ onSubmit, formToEdit, onClose, availableFormateurs }) => {
   const initialFormState = {
     numberHours: 0,
     price: 0,
@@ -9,6 +10,7 @@ const FormationForm = ({ onSubmit, formToEdit, onClose }) => {
     subject: '',
     city: '',
     date: new Date().toISOString().split('T')[0],
+    selectedFormateur: '', // New state to hold the selected formateur
   };
 
   const [formation, setFormation] = useState(formToEdit || initialFormState);
@@ -20,81 +22,56 @@ const FormationForm = ({ onSubmit, formToEdit, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    // Call the parent component's function to handle form submission
     onSubmit(formation);
-
+    // Reset the form or perform other actions as needed
     setFormation(initialFormState);
-
+    // Close the form
     onClose();
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <Box>
-        <TextField
-          required
-          label="Number of Hours:"
-          type="Number"
-          value={formation.numberHours}
-          onChange={handleChange}
-          sx={{ my: 2, width: '500px' }} 
-          InputProps={{ style: { fontSize: '16px' } }}
-        />
-      </Box>
-      <Box>
-        <TextField
-          required
-          label="Price:"
-          value={formation.price}
-          onChange={handleChange}
-          sx={{ my: 2, width: '500px' }} 
-          InputProps={{ style: { fontSize: '16px' } }}
-        />
-      </Box>
-      <Box>
-        <TextField
-          required
-          label="Description:"
-          value={formation.descreption}
-          onChange={handleChange}
-          sx={{ my: 2, width: '500px' }} 
-          InputProps={{ style: { fontSize: '16px' } }}
-        />
-      </Box>
-      <Box>
-        <TextField
-          required
-          label="Subject:"
-          value={formation.subject}
-          onChange={handleChange}
-          sx={{ my: 2, width: '500px' }} 
-          InputProps={{ style: { fontSize: '16px' } }}
-        />
-      </Box>
-      <Box>
-        <TextField
-          required
-          label="City:"
-          value={formation.city}
-          onChange={handleChange}
-          sx={{ my: 2, width: '500px' }} 
-          InputProps={{ style: { fontSize: '16px' } }}
-        />
-      </Box>
-      <Box>
-        <TextField
-          required
-          label="Date:"
-          type="date"
-          value={formation.date}
-          onChange={handleChange}
-          sx={{ my: 2, width: '500px' }} 
-          InputProps={{ style: { fontSize: '16px' } }}
-        />
-      </Box>
-      <Button type="submit" variant="contained" sx={{ my: 2, width: '500px' }} >
-        Create Formation
-      </Button>
+      <label>
+        Number of Hours:
+        <input type="number" name="numberHours" value={formation.numberHours} onChange={handleChange} />
+      </label>
+      <label>
+        Price:
+        <input type="number" name="price" value={formation.price} onChange={handleChange} />
+      </label>
+      <label>
+        Description:
+        <input type="text" name="descreption" value={formation.descreption} onChange={handleChange} />
+      </label>
+      <label>
+        Subject:
+        <input type="text" name="subject" value={formation.subject} onChange={handleChange} />
+      </label>
+      <label>
+        max Members:
+        <input type="number" name="totalMembers" value={formation.totalMembers} onChange={handleChange} />
+      </label>
+      <label>
+        City:
+        <input type="text" name="city" value={formation.city} onChange={handleChange} />
+      </label>
+      <label>
+        Date:
+        <input type="date" name="date" value={formation.date} onChange={handleChange} />
+      </label>
+      <label>
+        Select Formateur: 
+        <select name="selectedFormateur" value={formation.selectedFormateur} onChange={handleChange}>
+          <option value="">Select Formateur</option> {/* Default empty option */}
+          {/* Map over available formateurs and generate options */}
+          {availableFormateurs.map((formateur) => (
+            <option key={formateur.id} value={formateur.id}>{formateur.name} - {formateur.keyword}</option>
+          ))}
+        </select>
+      </label>
+      <button type="submit">{formToEdit ? 'Update Formation' : 'Create Formation'}</button>
+
     </form>
   );
 };

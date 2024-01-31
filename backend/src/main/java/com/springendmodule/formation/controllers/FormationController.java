@@ -78,11 +78,16 @@ public class FormationController {
 		return formationService.getAllFormation();
 	}
 	
+	@GetMapping("/available")
+	public List<FormationDTO> getAvailableFormation(){
+		return formationService.getAvailableFormation();
+	}
+	
 	@GetMapping("{id}")
 	public FormationDTO getById(@PathVariable Long id) {
 		return formationService.getById(id);
 	}
-	
+	//formationService.getById(id).getIndividuals().size()
 	@PostMapping("/save")
 	public FormationDTO save(@RequestBody FormationDTO formationDTO) {
 		return formationService.save(formationDTO);
@@ -90,6 +95,7 @@ public class FormationController {
 	
 	@PutMapping("/update")
 	public FormationDTO update(@RequestBody FormationDTO formationDTO) {
+		System.out.println(formationDTO);
 		return formationService.update(formationDTO);
 	}
 	
