@@ -36,6 +36,7 @@ public class SecurityConfig {
             "/user/formateur/eternal/add",
             "/formation/test-mail",
             "/user/{id}",
+            "/formateur/{id}",
             "/feedback/exist",
             "/feedback/save"
            };
