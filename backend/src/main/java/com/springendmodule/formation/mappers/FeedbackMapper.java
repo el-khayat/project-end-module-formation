@@ -1,5 +1,6 @@
 package com.springendmodule.formation.mappers;
 
+import com.springendmodule.formation.dtos.FeedbackResponseDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,11 @@ public class FeedbackMapper {
 		BeanUtils.copyProperties(feedback, feedbackDTO);
 		return feedbackDTO;
 		
+	}
+	public FeedbackResponseDTO fromFeedbackDtoToRespnose(FeedbackDTO feedbackDTO){
+		FeedbackResponseDTO feedbackResponseDTO = new FeedbackResponseDTO();
+		BeanUtils.copyProperties(feedbackDTO,feedbackResponseDTO);
+		return feedbackResponseDTO;
 	}
 
 }

@@ -100,8 +100,7 @@ const FormationsPage = () => {
   return (
     <div>
       <NavBar />
-
-      <Modal isOpen={isModalOpen} onClose={handleFormClose}>
+      <Modal isOpen={isModalOpen} onClose={handleFormClose} style={{ width:'500px' }}>
         <FormationForm
           formToEdit={formToEdit}
           onClose={handleFormClose}

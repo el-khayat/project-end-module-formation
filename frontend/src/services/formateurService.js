@@ -6,7 +6,7 @@ const UserFormateurService = {
   getAllFormateurs: async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${BASE_URL}/user/formateurs`, {
+      const response = await axios.get(`${BASE_URL}/formateur/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -18,11 +18,24 @@ const UserFormateurService = {
       throw error;
     }
   },
+  getFormateurById: async (id) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/formateur/${id}`, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      return await response.data;
+    } catch (error) {
+      console.error('Error fetching formateurs:', error);
+      throw error;
+    }
+  },
 
   createFormateur: async (formateurData) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${BASE_URL}/user/addUser`, formateurData, {
+      const response = await axios.post(`${BASE_URL}/formateur/add`, formateurData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -38,8 +51,9 @@ const UserFormateurService = {
 
   updateFormateur: async (formateurData) => {
     try {
+      console.log("formateurData", formateurData);
       const token = localStorage.getItem('token');
-      const response = await axios.put(`${BASE_URL}/user/update`, formateurData, {
+      const response = await axios.put(`${BASE_URL}/formateur/update`, formateurData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -54,7 +68,7 @@ const UserFormateurService = {
   deleteFormateur: async (formateurId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.delete(`${BASE_URL}/user/delete/${formateurId}`, {
+      const response = await axios.delete(`${BASE_URL}/formateur/delete/${formateurId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

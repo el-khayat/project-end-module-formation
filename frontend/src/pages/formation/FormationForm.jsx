@@ -1,5 +1,6 @@
-// FormationForm.js (Main Form Component)
+
 import React, { useState } from 'react';
+import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 
 const FormationForm = ({ onSubmit, formToEdit, onClose, availableFormateurs }) => {
   const initialFormState = {
@@ -60,7 +61,7 @@ const FormationForm = ({ onSubmit, formToEdit, onClose, availableFormateurs }) =
         <input type="date" name="date" value={formation.date} onChange={handleChange} />
       </label>
       <label>
-        Select Formateur: {/* Label for the select dropdown */}
+        Select Formateur: 
         <select name="selectedFormateur" value={formation.selectedFormateur} onChange={handleChange}>
           <option value="">Select Formateur</option> {/* Default empty option */}
           {/* Map over available formateurs and generate options */}
@@ -70,6 +71,7 @@ const FormationForm = ({ onSubmit, formToEdit, onClose, availableFormateurs }) =
         </select>
       </label>
       <button type="submit">{formToEdit ? 'Update Formation' : 'Create Formation'}</button>
+
     </form>
   );
 };

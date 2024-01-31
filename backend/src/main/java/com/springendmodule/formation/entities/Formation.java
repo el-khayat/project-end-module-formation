@@ -53,6 +53,7 @@ public class Formation implements Serializable {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
+
 	@ManyToMany(mappedBy = "formations")
 	private List<Individual> individuals=new ArrayList<>();
 
