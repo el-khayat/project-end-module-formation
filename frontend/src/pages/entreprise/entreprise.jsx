@@ -4,6 +4,7 @@ import NavBar from '../../components/navbar/navbarComponent';
 import Modal from '../../components/modal/Modal';
 import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 import TableComponent from '../../components/table/tableComponent';
+import ConfirmDeleteModal from '../../components/modal/ConfirmDeleteModal';
 
 const EntreprisePage = () => {
   const [entreprises, setEntreprises] = useState([]);
@@ -15,8 +16,13 @@ const EntreprisePage = () => {
     url: '',
     email: '',
   });
+
   const [mode, setMode] = useState('CREATE'); // CREATE | UPDATE
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
+  const [elementToDeleteName, setElementToDeleteName] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +49,7 @@ const EntreprisePage = () => {
         email: '',
       });
       closeModal();
+      alert('The Entreprise Added');
     } catch (error) {
       console.error('Error creating entreprise:', error);
     }
@@ -58,24 +65,36 @@ const EntreprisePage = () => {
     try {
       await EntrepriseService.updateEntreprise(newEntreprise);
       setEntreprises((prevEntreprises) =>
-        prevEntreprises.map((entreprise) =>
-          entreprise.id === newEntreprise.id ? newEntreprise : entreprise
-        )
+      prevEntreprises.map((entreprise) =>
+      entreprise.id === newEntreprise.id ? newEntreprise : entreprise
+      )
       );
       closeModal();
+      alert('The Entreprise Updated');
     } catch (error) {
       console.error('Error updating entreprise:', error);
     }
   };
 
   const handleDeleteEntreprise = async (entrepriseId) => {
+    const entrepriseToDelete = entreprises.find((entreprise) => entreprise.id === entrepriseId);
+
+    if (entrepriseToDelete) {
+      setElementToDeleteName(entrepriseToDelete.name);
+      setConfirmDeleteId(entrepriseId);
+      setIsConfirmDeleteModalOpen(true);
+    }
+  };
+
+  const confirmDeleteEntreprise = async () => {
     try {
-      await EntrepriseService.deleteEntrepriseById(entrepriseId);
+      await EntrepriseService.deleteEntrepriseById(confirmDeleteId);
       setEntreprises((prevEntreprises) =>
-        prevEntreprises.filter((entreprise) => entreprise.id !== entrepriseId)
+        prevEntreprises.filter((entreprise) => entreprise.id !== confirmDeleteId)
       );
+      setIsConfirmDeleteModalOpen(false);
     } catch (error) {
-      console.error('Error deleting entreprise:', error);
+      console.error('Error deleting enterprise:', error);
     }
   };
 
@@ -95,7 +114,7 @@ const EntreprisePage = () => {
     setMode('CREATE');
   };
 
-console.log(entreprises);
+  console.log(entreprises);
   const columns = [
     { id: 'id', label: '#' },
     { id: 'name', label: 'Name' },
@@ -110,8 +129,8 @@ console.log(entreprises);
     <div>
       <NavBar />
       <div>
-        <Modal isOpen={isModalOpen} onClose={closeModal} style={{ width:'500px' }}>
-          <Box  sx={{display:'flex',flexDirection:'column',width:500}} >
+        <Modal isOpen={isModalOpen} onClose={closeModal} style={{ width: '500px' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', width: 500 }}>
             <h2>{mode === 'CREATE' ? 'Create' : 'Update'} Entreprise</h2>
             <input
               type="hidden"
@@ -119,63 +138,80 @@ console.log(entreprises);
               onChange={(e) => setNewEntreprise({ ...newEntreprise, id: e.target.value })}
             />
             <TextField
-              sx={{my:2}}
+              sx={{ my: 2 }}
               required
               label="Name"
               value={newEntreprise.name}
               onChange={(e) => setNewEntreprise({ ...newEntreprise, name: e.target.value })}
             />
             <TextField
-            sx={{my:2}}
-            required
+              sx={{ my: 2 }}
+              required
               label="Address"
               value={newEntreprise.address}
               onChange={(e) => setNewEntreprise({ ...newEntreprise, address: e.target.value })}
             />
             <TextField
-            sx={{my:2}}
-            required
+              sx={{ my: 2 }}
+              required
               label="Phone"
               value={newEntreprise.phone}
               onChange={(e) => setNewEntreprise({ ...newEntreprise, phone: e.target.value })}
             />
             <TextField
-            sx={{my:2}}
-            required
+              sx={{ my: 2 }}
+              required
               label="URL"
               value={newEntreprise.url}
               onChange={(e) => setNewEntreprise({ ...newEntreprise, url: e.target.value })}
             />
             <TextField
-             sx={{my:2}}
-             required
+              sx={{ my: 2 }}
+              required
               label="Email"
               value={newEntreprise.email}
               onChange={(e) => setNewEntreprise({ ...newEntreprise, email: e.target.value })}
             />
-            {mode === "CREATE" ?
-              (
-                <Button variant="contained" onClick={handleCreateEntreprise} >Create</Button>
-              ) : (
-                <Button variant="contained" onClick={handleUpdate} >Update</Button>
-              )
-            }
+            {mode === 'CREATE' ? (
+              <Button variant="contained" onClick={handleCreateEntreprise}>
+                Create
+              </Button>
+            ) : (
+              <Button variant="contained" onClick={handleUpdate}>
+                Update
+              </Button>
+            )}
           </Box>
         </Modal>
       </div>
       <div>
-        <Paper fullWidth sx={{ overflow: 'hidden', m: 2, marginTop: "100px" }}>
-          <Box sx={{ display: "flex" }}>
-            <Button variant='outlined' sx={{ m: 1 }} onClick={openModal} >
+        <Paper fullWidth sx={{ overflow: 'hidden', m: 2, marginTop: '100px' }}>
+          <Box sx={{ display: 'flex' }}>
+            <Button variant="outlined" sx={{ m: 1 }} onClick={openModal}>
               Add Enterprise
             </Button>
-            <Typography variant='h6' component="h1" sx={{ m: 1, marginLeft: "400px" }}>
+            <Typography variant="h6" component="h1" sx={{ m: 1, marginLeft: '400px' }}>
               Enterprises List
             </Typography>
           </Box>
-          <TableComponent columns={columns} data={entreprises} handleUpdate={handleUpdateEntreprise} handleDelete={handleDeleteEntreprise} />
+          <TableComponent
+            columns={columns}
+            data={entreprises}
+            handleUpdate={handleUpdateEntreprise}
+            handleDelete={(entrepriseId) =>
+              handleDeleteEntreprise(entrepriseId)
+            }
+          />
         </Paper>
       </div>
+      <ConfirmDeleteModal
+        isOpen={isConfirmDeleteModalOpen}
+        itemName={elementToDeleteName}
+        text="Are you sure you want to delete the enterprise"
+        btn1="Delete"
+        onClose={() => setIsConfirmDeleteModalOpen(false)}
+        onConfirm={confirmDeleteEntreprise}
+      />
     </div>
   );
 };
