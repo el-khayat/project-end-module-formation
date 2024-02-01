@@ -5,6 +5,7 @@ import IndividuService from '../../services/individuService';
 import FormationTable from './FormationTable';
 import Modal from '../../components/modal/Modal';
 import EnrollForm from './EnrollForm';
+import { Box } from '@mui/material';
 
 const HomeFormationsPage = () => {
   const [formations, setFormations] = useState([]);
@@ -32,7 +33,7 @@ const HomeFormationsPage = () => {
     try {
       // Concatenate name and email to form a unique identifier
       const identifier = formData.firstName + formData.lastName;
-      
+
       // Check if individual already exists
       const existingIndividual = await IndividuService.getIndividualByNameAndEmail(identifier, formData.email);
       //console.log("individue id",existingIndividual.id);
@@ -48,17 +49,21 @@ const HomeFormationsPage = () => {
           alert('Already enrolled');
         } else {
           // Update individual with new formation
-          await IndividuService.updateIndividual({ id: existingIndividual.id, name: existingIndividual.name, 
-            email: existingIndividual.email, phone: existingIndividual.phone, city: existingIndividual.city, 
-            birthday: existingIndividual.birthday,formations: [{ id: formation_id }], feedbacks: [] });
+          await IndividuService.updateIndividual({
+            id: existingIndividual.id, name: existingIndividual.name,
+            email: existingIndividual.email, phone: existingIndividual.phone, city: existingIndividual.city,
+            birthday: existingIndividual.birthday, formations: [{ id: formation_id }], feedbacks: []
+          });
 
           alert('Enrolled successfully');
         }
       } else {
         console.log("new individue ");
         // Create new individual and enroll
-        await IndividuService.addIndividual({ name: identifier, email: formData.email,  phone: formData.phone,
-        city: formData.city, birthday: formData.birthDate, formations: [{ id: formation_id }] });
+        await IndividuService.addIndividual({
+          name: identifier, email: formData.email, phone: formData.phone,
+          city: formData.city, birthday: formData.birthDate, formations: [{ id: formation_id }]
+        });
         alert('Enrolled successfully');
       }
     } catch (error) {
@@ -78,9 +83,11 @@ const HomeFormationsPage = () => {
       <NavBar />
       <h1>Available Formations</h1>
       <FormationTable formations={formations} onEnroll={handleEnroll} />
-      
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <EnrollForm onSubmit={handleFormSubmit} onClose={closeModal} />
+
+      <Modal isOpen={isModalOpen} onClose={closeModal} style={{ width: '500px' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: 500 }}>
+          <EnrollForm onSubmit={handleFormSubmit} onClose={closeModal} />
+        </Box>
       </Modal>
     </div>
   );

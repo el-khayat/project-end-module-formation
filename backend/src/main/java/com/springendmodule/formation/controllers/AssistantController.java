@@ -65,14 +65,8 @@ public class AssistantController {
         return new ResponseEntity<String>("user deleted successfully",HttpStatusCode.valueOf(200));
     }
 
-
-
-
-
     @GetMapping("/userProfile")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public String userProfile() { return "Welcome to User Profile"; }
-
-
 
 }

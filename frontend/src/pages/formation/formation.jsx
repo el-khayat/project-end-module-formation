@@ -7,6 +7,7 @@ import "./formation.css"
 import { Box, Button, Paper, Typography } from '@mui/material';
 import TableComponent from '../../components/table/tableComponent';
 import UserFormateurService from '../../services/formateurService';
+import ConfirmDeleteModal from '../../components/modal/ConfirmDeleteModal';
 
 
 const FormationsPage = () => {
@@ -14,6 +15,9 @@ const FormationsPage = () => {
   const [formToEdit, setFormToEdit] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formateurs, setFormateurs] = useState([]);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
+  const [elementToDeleteName, setElementToDeleteName] = useState('');
 
 
 
@@ -45,20 +49,31 @@ const FormationsPage = () => {
   };
 
   const handleUpdateFormation = (formationId) => {
-      setFormToEdit(formationId);
+    setFormToEdit(formationId);
     setIsModalOpen(true);
   };
 
   const handleDeleteFormation = (formationId) => {
-    FormationService.deleteFormation(formationId)
-      .then(() => {
-        setFormations(prevFormations =>
-          prevFormations.filter(formation => formation.id !== formationId)
-        );
-      })
-      .catch(error => {
-        console.error('Error deleting formation:', error);
-      });
+    const formationToDelete = formations.find((formation) => formation.id === formationId);
+
+    if (formationToDelete) {
+      setElementToDeleteName(formationToDelete.subject);
+      setConfirmDeleteId(formationId);
+      setIsConfirmDeleteModalOpen(true);
+    }
+
+  };
+
+  const confirmDeleteFormation = async () => {
+    try {
+      await FormationService.deleteFormation(confirmDeleteId);
+      setFormations(prevFormations =>
+        prevFormations.filter(formation => formation.id !== confirmDeleteId)
+      );
+      setIsConfirmDeleteModalOpen(false);
+    } catch (error) {
+      console.error('Error deleting formation:', error);
+    }
   };
 
   const handleFormClose = () => {
@@ -70,12 +85,14 @@ const FormationsPage = () => {
       if (formData.selectedFormateur) {
         formData.user = { id: formData.selectedFormateur };
       }
-  
+
       if (formToEdit) {
         await FormationService.updateFormation(formData);
+        alert('The Formation Updated');
       } else {
         console.log('Create new record');
         await FormationService.createFormation(formData);
+        alert('The Formation Added');
       }
 
       setIsModalOpen(false);
@@ -92,20 +109,30 @@ const FormationsPage = () => {
     { id: 'descreption', label: 'Descreption' },
     { id: 'subject', label: 'Subject' },
     { id: 'city', label: 'City' },
-    { id: 'date', label: 'Date',format: (value) => new Date(value).toLocaleDateString() },
-    { id: 'user', label: 'Formateur' ,format: (value) => value ? value.name : 'No Formateur'},
+    { id: 'date', label: 'Date', format: (value) => new Date(value).toLocaleDateString() },
+    { id: 'user', label: 'Formateur', format: (value) => value ? value.name : 'No Formateur' },
 
   ];
 
   return (
     <div>
       <NavBar />
-      <Modal isOpen={isModalOpen} onClose={handleFormClose} style={{ width:'500px' }}>
+
+      <ConfirmDeleteModal
+        isOpen={isConfirmDeleteModalOpen}
+        itemName={elementToDeleteName}
+        text="Are you sure you want to delete the formation"  
+        btn1="Delete"
+        onClose={() => setIsConfirmDeleteModalOpen(false)}
+        onConfirm={confirmDeleteFormation}
+      />
+
+      <Modal isOpen={isModalOpen} onClose={handleFormClose} style={{ width: '500px' }}>
         <FormationForm
           formToEdit={formToEdit}
           onClose={handleFormClose}
           onSubmit={handleFormSubmit}
-          availableFormateurs = {formateurs}
+          availableFormateurs={formateurs}
         />
       </Modal>
 
@@ -121,7 +148,7 @@ const FormationsPage = () => {
           </Box>
           <TableComponent columns={columns} data={formations} handleUpdate={handleUpdateFormation} handleDelete={handleDeleteFormation} />
         </Paper>
-      </div> 
+      </div>
 
     </div>
   );
