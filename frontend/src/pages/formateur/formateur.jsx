@@ -135,7 +135,6 @@ const FormateurPage = () => {
     { id: 'keywords', label: 'Keyword' },
     {
       id: 'actions',
-      label: 'Actions',
       render: (formateur) => (
         <>
           <Button onClick={() => handleUpdateFormateur(formateur)}>Update</Button>
