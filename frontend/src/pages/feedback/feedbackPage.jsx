@@ -25,6 +25,7 @@ const FeedbackPage = () => {
     const [code, setCode] = useState("");
     const [done, setDone] = useState(false);
     const [submited, setSubmited] = useState(false);
+    const [error, setError] = useState(false);
 
 
     const fetchData = async  ()=>{
@@ -47,6 +48,10 @@ const FeedbackPage = () => {
         params = new URLSearchParams(queryString);
         const individualId = params.get('individualId');
         const formateurId = params.get('formateurId');
+
+        if(!individualId || !formateurId){
+            setError(true)
+        }
 
         console.log("token is :" + token);
         console.log("decoded is :" + Base64.decode(token));
@@ -87,7 +92,9 @@ const FeedbackPage = () => {
                 <Box sx={style}>
 
 
-                {done ? (
+                {error ? (<Typography id="modal-modal-title" variant="h6" component="h2">
+                        Opps something went wrong please check your link
+                    </Typography>) : done ? (
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Your feedback submited thank you 
                     </Typography>

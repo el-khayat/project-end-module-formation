@@ -35,8 +35,6 @@ const FormationService = {
       throw error;
     }
   },
-
-  
   updateFormation: async (formationData) => {
     try {
       const token = localStorage.getItem('token');
@@ -63,6 +61,34 @@ const FormationService = {
       return response.data;
     } catch (error) {
       console.error('Error deleting formation:', error);
+      throw error;
+    }
+  },
+  assignFormateur : async (formationId,formateurId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put(`${BASE_URL}/formation/assignFormateur/${formationId}/${formateurId}`,{}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error selecting formateur  formation:', error);
+      throw error;
+    }
+  },
+  sendFeedbackFormMail : async (formationId) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.get(`http://localhost:8080/formation/${formationId}/send-feedback-form`, {
+        headers: { Authorization: `Bearer ${token}`,
+      },
+      });
+
+    } catch (error) {
+      console.error('Error sending emails to individuals:', error);
       throw error;
     }
   },
