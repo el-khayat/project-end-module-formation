@@ -5,8 +5,10 @@ import java.util.List;
 
 import com.springendmodule.formation.entities.Formation;
 import com.springendmodule.formation.entities.Individual;
+import com.springendmodule.formation.entities.User;
 import com.springendmodule.formation.servies.EmailService;
 import com.springendmodule.formation.servies.EncryptionService;
+import com.springendmodule.formation.servies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,6 +32,9 @@ public class FormationController {
 	FormationService formationService;
 
 	@Autowired
+	UserService userService ;
+
+	@Autowired
 	EmailService emailService ;
 
 	@Autowired
@@ -38,6 +43,7 @@ public class FormationController {
 	@GetMapping("/{formation_id}/send-feedback-form")
 	public void sendFeedbackFormMail(@PathVariable Long formation_id ) throws Exception {
 
+		System.out.println("sending emails to individuals ....");
 		FormationDTO formation = this.getById(formation_id);
 		Integer id_formateur = formation.getUser().getId();
 
@@ -45,7 +51,7 @@ public class FormationController {
 			String subject = "Feedback on the Formateur";
 			String token = "formateurId="+id_formateur+"&individualId="+individual.getId()+"&formationId="+formation_id ;
 			token = encryptionService.encrypt(token);
-			String link = "http://localhost:3000/feedback?"+token;
+			String link = "http://localhost:3000/feedback?token="+token;
 			String body = "please let a feedback on your foramteur via the link below "+link;
 
 			emailService.sendSimpleEmail(individual.getEmail(),subject,body);
@@ -96,6 +102,15 @@ public class FormationController {
 	public FormationDTO update(@RequestBody FormationDTO formationDTO) {
 		System.out.println(formationDTO);
 		return formationService.update(formationDTO);
+	}
+	@PutMapping("/assignFormateur/{formationId}/{formateurId}")
+	public void assignFormatuer( @PathVariable Long formationId,  @PathVariable Integer formateurId){
+		System.out.println("assiging formateur ...");
+		System.out.println("#######\n#######################\n##################");
+		FormationDTO formation = this.formationService.getById(formationId) ;
+		User user = userService.getUserById( formateurId);
+		formation.setUser(user);
+		formationService.update(formation);
 	}
 	
 	@DeleteMapping("/delete/{id}")

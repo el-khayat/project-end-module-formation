@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from '../../components/navbar/navbarComponent';
 import FormationForm from './FormationForm';
-import FormationService from '../../services/formationServices';
+import FormationService from '../../services/formationService';
 import Modal from '../../components/modal/Modal';
+import SelectModal from '../../components/modalSelect/modalSelectComponent';
 import "./formation.css"
 import { Box, Button, Paper, Typography } from '@mui/material';
-import TableComponent from '../../components/table/tableComponent';
+import TableComponent from '../../components/table/FormationTableComponent';
 import UserFormateurService from '../../services/formateurService';
 
 
@@ -13,13 +14,16 @@ const FormationsPage = () => {
   const [formations, setFormations] = useState([]);
   const [formToEdit, setFormToEdit] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenSelect, setIsModalOpenSelect] = useState(false);
   const [formateurs, setFormateurs] = useState([]);
-
+  const [formationId, setFormationId] = useState(null);
 
 
   useEffect(() => {
     FormationService.getAllFormations()
       .then(response => {
+        console.log(response)
+
         setFormations(response);
       })
       .catch(error => {
@@ -45,7 +49,7 @@ const FormationsPage = () => {
   };
 
   const handleUpdateFormation = (formationId) => {
-      setFormToEdit(formationId);
+    setFormToEdit(formationId);
     setIsModalOpen(true);
   };
 
@@ -64,13 +68,16 @@ const FormationsPage = () => {
   const handleFormClose = () => {
     setIsModalOpen(false);
   };
+  const handleFormCloseSelect = () => {
+    setIsModalOpenSelect(false);
+  };
 
   const handleFormSubmit = async (formData) => {
     try {
       if (formData.selectedFormateur) {
         formData.user = { id: formData.selectedFormateur };
       }
-  
+
       if (formToEdit) {
         await FormationService.updateFormation(formData);
       } else {
@@ -85,6 +92,7 @@ const FormationsPage = () => {
       console.error('Error submitting form data:', error);
     }
   };
+
   const columns = [
     { id: 'id', label: '#' },
     { id: 'numberHours', label: 'Number Hours' },
@@ -92,25 +100,66 @@ const FormationsPage = () => {
     { id: 'descreption', label: 'Descreption' },
     { id: 'subject', label: 'Subject' },
     { id: 'city', label: 'City' },
-    { id: 'date', label: 'Date',format: (value) => new Date(value).toLocaleDateString() },
-    { id: 'user', label: 'Formateur' ,format: (value) => value ? value.name : 'No Formateur'},
-
+    { id: 'date', label: 'Date', format: (value) => new Date(value).toLocaleDateString() },
+    { id: 'individuals', label: 'Subscribers', format: (value) => value ? value.length : '0' },
+    { id: 'user', label: 'Formateur', format: (value) => value ? value.name : 'Not Assigned Yet' },
   ];
+
+  const selectFornateur = (formationId) => {
+
+    setFormationId(formationId);
+    setIsModalOpenSelect(true);
+  }
+
+  const sendFeedbackRequest = (formationId) => {
+    console.log('send feedback request', formationId);
+    FormationService.sendFeedbackFormMail(formationId)
+  }
+
+  let actions = [
+    { name: "Assign Formateur", action: selectFornateur },
+    { name: "Send Feedback Request", action: sendFeedbackRequest },
+  ];
+
+  const AssignFormateur =  (formateurId)=>{
+    FormationService.assignFormateur(formationId,formateurId)
+    .then(()=>{
+      setIsModalOpenSelect(false);
+      // const updatedFormations =   FormationService.getAllFormations();
+      // setFormations(updatedFormations);
+    })
+    .catch(error=>{
+      console.log(error);
+    })
+  }
 
   return (
     <div>
       <NavBar />
-      <Modal isOpen={isModalOpen} onClose={handleFormClose} style={{ width:'500px' }}>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleFormClose}
+        style={{ width: '500px' }}>
+
+        
+
         <FormationForm
           formToEdit={formToEdit}
           onClose={handleFormClose}
           onSubmit={handleFormSubmit}
-          availableFormateurs = {formateurs}
+          availableFormateurs={formateurs}
         />
       </Modal>
+      <SelectModal
+          open={isModalOpenSelect}
+          onClose={handleFormCloseSelect}
+          style={{ width: '500px' }}
+          handleClose={handleFormCloseSelect}
+          AssignFormateur={AssignFormateur}
+        />
 
       <div>
-        <Paper fullWidth sx={{ overflow: 'hidden', m: 2, marginTop: "100px" }}>
+        <Paper sx={{ overflow: 'hidden', m: 2, marginTop: "100px" }}>
           <Box sx={{ display: "flex" }}>
             <Button variant='outlined' sx={{ m: 1 }} onClick={handleAddFormation} >
               Add Formation
@@ -119,10 +168,14 @@ const FormationsPage = () => {
               Formations List
             </Typography>
           </Box>
-          <TableComponent columns={columns} data={formations} handleUpdate={handleUpdateFormation} handleDelete={handleDeleteFormation} />
+          <TableComponent
+            columns={columns}
+            data={formations}
+            handleUpdate={handleUpdateFormation}
+            handleDelete={handleDeleteFormation}
+            actions={actions} />
         </Paper>
-      </div> 
-
+      </div>
     </div>
   );
 };
