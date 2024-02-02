@@ -8,6 +8,7 @@ import "./formation.css"
 import { Box, Button, Paper, Typography } from '@mui/material';
 import TableComponent from '../../components/table/FormationTableComponent';
 import UserFormateurService from '../../services/formateurService';
+import ConfirmDeleteModal from '../../components/modal/ConfirmDeleteModal';
 
 
 const FormationsPage = () => {
@@ -17,6 +18,11 @@ const FormationsPage = () => {
   const [isModalOpenSelect, setIsModalOpenSelect] = useState(false);
   const [formateurs, setFormateurs] = useState([]);
   const [formationId, setFormationId] = useState(null);
+
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
+  const [elementToDeleteName, setElementToDeleteName] = useState('');
+
 
 
   useEffect(() => {
@@ -54,15 +60,30 @@ const FormationsPage = () => {
   };
 
   const handleDeleteFormation = (formationId) => {
-    FormationService.deleteFormation(formationId)
-      .then(() => {
-        setFormations(prevFormations =>
-          prevFormations.filter(formation => formation.id !== formationId)
-        );
-      })
-      .catch(error => {
-        console.error('Error deleting formation:', error);
-      });
+    console.log('delete formation', formationId);
+    const formationToDelete = formations.find((formation) => formation.id === formationId);
+
+    if (formationToDelete) {
+
+      setElementToDeleteName(formationToDelete.subject);
+      setConfirmDeleteId(formationId);
+      setIsConfirmDeleteModalOpen(true);
+      console.log('formation to delete', formationToDelete);
+      console.log('formation to delete model this open ', isConfirmDeleteModalOpen);
+    }
+
+  };
+
+  const confirmDeleteFormation = async () => {
+    try {
+      await FormationService.deleteFormation(confirmDeleteId);
+      setFormations(prevFormations =>
+        prevFormations.filter(formation => formation.id !== confirmDeleteId)
+      );
+      setIsConfirmDeleteModalOpen(false);
+    } catch (error) {
+      console.error('Error deleting formation:', error);
+    }
   };
 
   const handleFormClose = () => {
@@ -80,9 +101,11 @@ const FormationsPage = () => {
 
       if (formToEdit) {
         await FormationService.updateFormation(formData);
+        alert('The Formation Updated');
       } else {
         console.log('Create new record');
         await FormationService.createFormation(formData);
+        alert('The Formation Added');
       }
 
       setIsModalOpen(false);
@@ -137,12 +160,24 @@ const FormationsPage = () => {
     <div>
       <NavBar />
       <Modal
-        isOpen={isModalOpen}
+        isOpen={isConfirmDeleteModalOpen}
         onClose={handleFormClose}
         style={{ width: '500px' }}>
 
         
 
+
+      <ConfirmDeleteModal
+        isOpen={isConfirmDeleteModalOpen}
+        itemName={elementToDeleteName}
+        text="Are you sure you want to delete the formation"  
+        btn1="Delete"
+        onClose={() => setIsConfirmDeleteModalOpen(false)}
+        onConfirm={confirmDeleteFormation}
+      />
+      </Modal>
+
+      <Modal isOpen={isModalOpen} onClose={handleFormClose} style={{ width: '500px' }}>
         <FormationForm
           formToEdit={formToEdit}
           onClose={handleFormClose}
@@ -157,7 +192,6 @@ const FormationsPage = () => {
           handleClose={handleFormCloseSelect}
           AssignFormateur={AssignFormateur}
         />
-
       <div>
         <Paper sx={{ overflow: 'hidden', m: 2, marginTop: "100px" }}>
           <Box sx={{ display: "flex" }}>
@@ -173,6 +207,7 @@ const FormationsPage = () => {
             data={formations}
             handleUpdate={handleUpdateFormation}
             handleDelete={handleDeleteFormation}
+            setIsConfirmDeleteModalOpen ={setIsConfirmDeleteModalOpen}
             actions={actions} />
         </Paper>
       </div>

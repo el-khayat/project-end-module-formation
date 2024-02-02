@@ -2,7 +2,7 @@ import React from 'react'
 import { Avatar, Box, Button, IconButton, Menu, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip, Typography } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const TableComponent = ({ data, columns, handleUpdate, handleDelete, actions }) => {
+const TableComponent = ({ data, columns, handleUpdate, handleDelete, actions,setIsConfirmDeleteModalOpen }) => {
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);

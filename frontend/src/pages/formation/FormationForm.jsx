@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Box, Button, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button,TextField,  MenuItem } from '@mui/material';
 
 const FormationForm = ({ onSubmit, formToEdit, onClose, availableFormateurs }) => {
   const initialFormState = {
@@ -10,7 +10,7 @@ const FormationForm = ({ onSubmit, formToEdit, onClose, availableFormateurs }) =
     subject: '',
     city: '',
     date: new Date().toISOString().split('T')[0],
-    selectedFormateur: '', // New state to hold the selected formateur
+    selectedFormateur: '', 
   };
 
   const [formation, setFormation] = useState(formToEdit || initialFormState);
@@ -22,56 +22,100 @@ const FormationForm = ({ onSubmit, formToEdit, onClose, availableFormateurs }) =
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Call the parent component's function to handle form submission
     onSubmit(formation);
-    // Reset the form or perform other actions as needed
     setFormation(initialFormState);
-    // Close the form
     onClose();
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        Number of Hours:
-        <input type="number" name="numberHours" value={formation.numberHours} onChange={handleChange} />
-      </label>
-      <label>
-        Price:
-        <input type="number" name="price" value={formation.price} onChange={handleChange} />
-      </label>
-      <label>
-        Description:
-        <input type="text" name="descreption" value={formation.descreption} onChange={handleChange} />
-      </label>
-      <label>
-        Subject:
-        <input type="text" name="subject" value={formation.subject} onChange={handleChange} />
-      </label>
-      <label>
-        max Members:
-        <input type="number" name="totalMembers" value={formation.totalMembers} onChange={handleChange} />
-      </label>
-      <label>
-        City:
-        <input type="text" name="city" value={formation.city} onChange={handleChange} />
-      </label>
-      <label>
-        Date:
-        <input type="date" name="date" value={formation.date} onChange={handleChange} />
-      </label>
-      <label>
-        Select Formateur: 
-        <select name="selectedFormateur" value={formation.selectedFormateur} onChange={handleChange}>
-          <option value="">Select Formateur</option> {/* Default empty option */}
-          {/* Map over available formateurs and generate options */}
+      <Box sx={{ display: 'flex', flexDirection: 'column', width: 500 }} >
+        <TextField
+          required
+          label="Number of Hours:"
+          type="Number"
+          name="numberHours"
+          value={formation.numberHours}
+          onChange={handleChange}
+          sx={{ my: 1, width: '500px' }}
+          InputProps={{ style: { fontSize: '16px' } }}
+        />
+        <TextField
+          required
+          label="Price:"
+          name="price"
+          value={formation.price}
+          onChange={handleChange}
+          sx={{ my: 1, width: '500px' }}
+        />
+        <TextField
+          required
+          label="Description:"
+          name="descreption"
+          value={formation.descreption}
+          onChange={handleChange}
+          sx={{ my: 1, width: '500px' }}
+          InputProps={{ style: { fontSize: '16px' } }}
+        />
+        <TextField
+          required
+          label="Subject:"
+          name="subject"
+          value={formation.subject}
+          onChange={handleChange}
+          sx={{ my: 1, width: '500px' }}
+          InputProps={{ style: { fontSize: '16px' } }}
+        />
+        <TextField
+          required
+          type="Number"
+          label="Max Members:"
+          name="totalMembers"
+          value={formation.totalMembers}
+          onChange={handleChange}
+          sx={{ my: 1, width: '500px' }}
+          InputProps={{ style: { fontSize: '16px' } }}
+        />
+        <TextField
+          required
+          label="City:"
+          name="city"
+          value={formation.city}
+          onChange={handleChange}
+          sx={{ my: 1, width: '500px' }}
+          InputProps={{ style: { fontSize: '16px' } }}
+        />
+        <TextField
+          required
+          label="Date:"
+          type="Date"
+          name="date"
+          value={formation.date}
+          onChange={handleChange}
+          sx={{ my: 1, width: '500px' }}
+          InputProps={{ style: { fontSize: '16px' } }}
+        />
+        <TextField
+          required
+          label="Select Formateur"
+          sx={{ my: 1, width: '500px' }}
+          InputProps={{ style: { fontSize: '16px' } }}
+          select
+          name="selectedFormateur"
+          value={formation.selectedFormateur}
+          onChange={handleChange}
+        >
+          <MenuItem value="">Select Formateur</MenuItem>
           {availableFormateurs.map((formateur) => (
-            <option key={formateur.id} value={formateur.id}>{formateur.name} - {formateur.keyword}</option>
+            <MenuItem key={formateur.id} value={formateur.id}>
+              {formateur.name} - {formateur.keyword}
+            </MenuItem>
           ))}
-        </select>
-      </label>
-      <button type="submit">{formToEdit ? 'Update Formation' : 'Create Formation'}</button>
-
+        </TextField>
+      </Box>
+      <Button type="submit" variant="contained" sx={{ my: 1, width: '500px' }} >
+        Create Formation
+      </Button>
     </form>
   );
 };

@@ -12,6 +12,7 @@ import FormationsPage from './pages/formation/formation';
 import ExternalFormateurPage from './pages/externalFormateur/externalFormateurPublic';
 import ExternalFormateurPrivatePage from './pages/externalFormateur/externalFormateurPrivate';
 import FeedbackPage from './pages/feedback/feedbackPage';
+import AssistantPage from './pages/assistant/assistant';
 
 
 function App() {
@@ -40,6 +41,10 @@ function App() {
     }, {
       path: "/Enterprise",
       element: <EnterprisePage />,
+    }
+    ,{
+      path: "/assistant",
+      element: <AssistantPage />,
     },{
       path: "/formateurs/external",
       element: <ExternalFormateurPrivatePage />,

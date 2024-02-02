@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.springendmodule.formation.dtos.FormationDTO;
 import com.springendmodule.formation.entities.Formation;
+import com.springendmodule.formation.entities.User;
 import com.springendmodule.formation.mappers.FormationMapper;
 import com.springendmodule.formation.repositories.FormationRepository;
 
@@ -65,6 +66,11 @@ public class FormationService {
 		Formation formation=formationRepository.findById(id).orElse(null);
 		formation.getIndividuals().forEach(individual -> individual.getFormations().remove(formation));
 		formation.getIndividuals().clear();
+		
+		User user = formation.getUser(); // Get the user associated with the formation
+	    if (user != null) {
+	        user.getFormations().remove(formation); // Remove the formation from the user's formations list
+	    }
 		formationRepository.deleteById(id);
 		
 	}
