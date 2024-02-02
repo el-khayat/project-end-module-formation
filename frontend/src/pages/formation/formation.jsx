@@ -19,7 +19,7 @@ const FormationsPage = () => {
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
   const [elementToDeleteName, setElementToDeleteName] = useState('');
 
-
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     FormationService.getAllFormations()
@@ -78,6 +78,7 @@ const FormationsPage = () => {
 
   const handleFormClose = () => {
     setIsModalOpen(false);
+    setSelectedFile(null); 
   };
 
   const handleFormSubmit = async (formData) => {

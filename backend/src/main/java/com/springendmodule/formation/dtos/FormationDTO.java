@@ -30,6 +30,8 @@ public class FormationDTO implements Serializable {
 	
 	private String city;
 	
+	private String path;
+	
 	private Date date;
 	
 	private Category category;
