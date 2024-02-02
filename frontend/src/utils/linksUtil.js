@@ -19,7 +19,7 @@ const linkFormations ={
 const linkAssistant ={
     name : 'Assistant',
     path : '/assistant',
-    roles : ['ADMIN_ROLE','ASSISTANT_ROLE']
+    roles : ['ADMIN_ROLE']
 }
 
 const linkEnterprise ={
