@@ -31,6 +31,7 @@ public class SecurityConfig {
             "/auth/addNewUser",
             "/auth/open-end-point",
             "/formation/available",
+            "/formation/image/*",
             "/individual/*",
             "/individual/*/*",
             "/user/formateur/eternal/add",
