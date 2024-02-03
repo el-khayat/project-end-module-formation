@@ -16,8 +16,10 @@ import com.springendmodule.formation.servies.EmailService;
 import com.springendmodule.formation.servies.EncryptionService;
 import com.springendmodule.formation.servies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -72,6 +74,7 @@ public class FormationController {
 
 	@GetMapping("/test-mail")
 	public void testMail() throws Exception {
+
 		/*
 		 *
 		 * this method just for a simple test the method above will be used for sending
@@ -86,6 +89,7 @@ public class FormationController {
 		token = encryptionService.encrypt(token);
 		String link = "http://localhost:3000/feedback?token=" + token;
 		String body = "please let a feedback on your foramteur via the link below \n" + link;
+
 
 		emailService.sendSimpleEmail("mohamed.elkhayat5@etu.uae.ac.ma", subject, body);
 
@@ -169,6 +173,23 @@ public class FormationController {
 	public void deleteById(@PathVariable Long id) {
 		formationService.deleteById(id);
 	}
+	
+	private static final String IMAGE_DIRECTORY = "./src/main/resources/images/";
+
+	//to retrieve images
+	 @GetMapping("/image/{imageName}")
+	    public ResponseEntity<byte[]> getImage(@PathVariable String imageName) {
+	        try {
+	        	System.out.println("im called");
+	            Path imagePath = Paths.get(IMAGE_DIRECTORY, imageName);
+	            byte[] imageData = Files.readAllBytes(imagePath);
+	            HttpHeaders headers = new HttpHeaders();
+	            headers.setContentType(MediaType.IMAGE_JPEG); // or MediaType.IMAGE_PNG, depending on your image type
+	            return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
+	        } catch (IOException e) {
+	            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	        }
+	    }
 
 	private String saveImage(MultipartFile image) throws IOException {
 		String originalFilename = image.getOriginalFilename();

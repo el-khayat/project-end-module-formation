@@ -31,12 +31,12 @@ public class SecurityConfig {
             "/auth/addNewUser",
             "/auth/open-end-point",
             "/formation/available",
+            "/formation/image/*",
             "/individual/*",
             "/individual/*/*",
             "/user/formateur/eternal/add",
             "/formation/test-mail",
             "/user/{id}",
-            "/formateur/{id}",
             "/feedback/exist",
             "/feedback/save"
            };

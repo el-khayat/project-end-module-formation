@@ -42,8 +42,8 @@ public class EntrepriseService {
 	public EntrepriseDTO save(EntrepriseDTO entrepriseDTO) {
 
 		Entreprise entreprise = entrepriseMapper.fromEntropriseDTO(entrepriseDTO);
-		EntrepriseDTO entrepriseDTO1 = entrepriseMapper.fromEntreprise(entrepriseRepository.save(entreprise)) ;
-		return entrepriseDTO1;
+		entrepriseRepository.save(entreprise);
+		return entrepriseDTO;
 
 	}
 

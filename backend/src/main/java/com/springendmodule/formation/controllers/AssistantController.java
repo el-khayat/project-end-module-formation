@@ -17,7 +17,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/assistant")
-@CrossOrigin(origins = "*")
 public class AssistantController {
 
     @Autowired UserService service;
