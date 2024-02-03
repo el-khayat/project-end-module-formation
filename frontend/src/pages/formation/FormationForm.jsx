@@ -11,7 +11,7 @@ const FormationForm = ({ onSubmit, formToEdit, onClose, availableFormateurs }) =
     city: '',
     date: new Date().toISOString().split('T')[0],
     selectedFormateur: '',
-    image: null,
+    image: null,  
   };
 
   const [selectedFile, setSelectedFile] = useState(null);
@@ -19,24 +19,16 @@ const FormationForm = ({ onSubmit, formToEdit, onClose, availableFormateurs }) =
   const [formation, setFormation] = useState(formToEdit || initialFormState);
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    
-    if (name === 'image') {
-      const file = files[0];
-      setSelectedFile(file);
-      
-      const imageName = file ? file.name : null;
-      setFormation({ ...formation, [name]: imageName });
-    } else {
-      const newValue = name === 'date' ? e.target.value : value;
-      setFormation({ ...formation, [name]: newValue });
-    }
+    const { name, value } = e.target;
+
+    const newValue = name === 'date' ? e.target.value : value;
+    setFormation({ ...formation, [name]: newValue });
   };
-  
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
+    setFormation({ ...formation, image: file });
   };
 
   const handleSubmit = (e) => {
