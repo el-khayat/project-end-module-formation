@@ -9,9 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.springendmodule.formation.entities.Category;
 import com.springendmodule.formation.entities.Formation;
 import com.springendmodule.formation.entities.Individual;
 import com.springendmodule.formation.entities.User;
+import com.springendmodule.formation.mappers.CategoryMapper;
+import com.springendmodule.formation.servies.CategoryService;
 import com.springendmodule.formation.servies.EmailService;
 import com.springendmodule.formation.servies.EncryptionService;
 import com.springendmodule.formation.servies.UserService;
@@ -46,6 +49,12 @@ public class FormationController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	CategoryService categoryService;
+	
+	@Autowired
+	CategoryMapper categoryMapper;
 
 	@Autowired
 	EmailService emailService;
@@ -166,6 +175,16 @@ public class FormationController {
 		FormationDTO formation = this.formationService.getById(formationId);
 		User user = userService.getUserById(formateurId);
 		formation.setUser(user);
+		formationService.update(formation);
+	}
+	
+	@PutMapping("/assignCategory/{formationId}/{categoryId}")
+	public void assignCategory(@PathVariable Long formationId, @PathVariable Long categoryId) {
+		System.out.println("assiging category ...");
+		System.out.println("#######\n#######################\n##################");
+		FormationDTO formation = this.formationService.getById(formationId);
+		Category cat =categoryMapper.fromCategoryDTO(categoryService.getByID(categoryId));
+		formation.setCategory(cat);
 		formationService.update(formation);
 	}
 

@@ -111,6 +111,21 @@ const FormationService = {
       throw error;
     }
   },
+  assignCategory: async (formationId, categoryId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put(`${BASE_URL}/formation/assignCategory/${formationId}/${categoryId}`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error selecting formateur  formation:', error);
+      throw error;
+    }
+  },
   sendFeedbackFormMail: async (formationId) => {
     try {
       const token = localStorage.getItem('token');
