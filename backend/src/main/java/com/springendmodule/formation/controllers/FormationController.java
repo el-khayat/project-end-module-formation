@@ -130,9 +130,9 @@ public class FormationController {
 				imageName = saveImage(image);
 				System.out.println("testing image");
 			}
-//			} else {
-//				imageName="default.jpg";
-//			}
+			 else {
+				imageName="no_image.jpg";
+			}
 
 			formationDTO.setPath(imageName);
 			System.out.println(formationDTO.getUser());
@@ -199,7 +199,6 @@ public class FormationController {
 	 @GetMapping("/image/{imageName}")
 	    public ResponseEntity<byte[]> getImage(@PathVariable String imageName) {
 	        try {
-	        	System.out.println("im called");
 	            Path imagePath = Paths.get(IMAGE_DIRECTORY, imageName);
 	            byte[] imageData = Files.readAllBytes(imagePath);
 	            HttpHeaders headers = new HttpHeaders();
