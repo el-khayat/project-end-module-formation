@@ -54,18 +54,21 @@ const FormationsCards = ({ formations, onEnroll }) => {
       {formations.map((formation) => (
         <Grid item xs={12} sm={6} md={4} lg={3} key={formation.id}>
           <Card
-            sx={{
-              height: '100%', // Set height to 100%
-              display: 'flex',
-              flexDirection: 'column', // Ensure content stacks vertically
-              transition: 'transform 0.3s, box-shadow 0.3s',
-              borderRadius: '10px',
-              '&:hover': {
-                transform: 'scale(1.05)',
-                boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.4)',
-              },
-            }}
-          >
+  sx={{
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    transition: 'transform 0.3s, box-shadow 0.3s',
+    borderRadius: '10px',
+    border: '1px solid #e0e0e0', // Add a border
+    '&:hover': {
+      transform: 'scale(1.05)',
+      boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.4)',
+    },
+    backgroundColor: '#f5f5f5', // Set the background color of the card
+  }}
+>
+
             {imageDataMap[formation.id] && (
               <CardMedia
                 component="img"
