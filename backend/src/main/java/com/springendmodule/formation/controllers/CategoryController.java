@@ -3,6 +3,10 @@ package com.springendmodule.formation.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,14 +21,17 @@ import com.springendmodule.formation.servies.CategoryService;
 
 @RestController
 @RequestMapping("/category")
+@CrossOrigin(origins = "*")
 public class CategoryController {
 	
 	@Autowired
 	CategoryService categoryService;
 	
 	@GetMapping("/all")
-	public List<CategoryDTO> getAllCategories(){
-		return categoryService.getAllCategories();
+	@PreAuthorize("hasAuthority('ADMIN_ROLE') or hasAuthority('ASSISTANT_ROLE') ")
+	public ResponseEntity<List<CategoryDTO>> getAllCategories(){
+		System.out.println("hhhh");
+		return new ResponseEntity<>(categoryService.getAllCategories(),HttpStatusCode.valueOf(200));
 	}
 	
 	@GetMapping("{id}")

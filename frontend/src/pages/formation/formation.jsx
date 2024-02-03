@@ -4,10 +4,12 @@ import FormationForm from './FormationForm';
 import FormationService from '../../services/formationService';
 import Modal from '../../components/modal/Modal';
 import SelectModal from '../../components/modalSelect/modalSelectComponent';
+import ModalSelectCategory from '../../components/modalSelect/modalSelectComponentCategory';
 import "./formation.css"
 import { Box, Button, Paper, Typography } from '@mui/material';
 import TableComponent from '../../components/table/FormationTableComponent';
 import UserFormateurService from '../../services/formateurService';
+import CategoryService from '../../services/categoryService';
 import ConfirmDeleteModal from '../../components/modal/ConfirmDeleteModal';
 
 
@@ -16,7 +18,9 @@ const FormationsPage = () => {
   const [formToEdit, setFormToEdit] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenSelect, setIsModalOpenSelect] = useState(false);
+  const [isModalOpenSelectCategory, setIsModalOpenSelectCategory] = useState(false);
   const [formateurs, setFormateurs] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [formationId, setFormationId] = useState(null);
 
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
@@ -46,7 +50,15 @@ const FormationsPage = () => {
       });
   }, []);
 
-
+  useEffect(() => {
+    CategoryService.getAllCategies()
+      .then(response => {
+        setCategories(response);
+      })
+      .catch(error => {
+        console.error('Error fetching formateurs:', error);
+      });
+  }, []);
 
   const handleAddFormation = () => {
     setFormToEdit(null);
@@ -89,7 +101,12 @@ const FormationsPage = () => {
     setIsModalOpen(false);
   };
   const handleFormCloseSelect = () => {
+    console.log("hello");
     setIsModalOpenSelect(false);
+  };
+  const handleFormCloseSelectCategory = () => {
+    console.log("hello");
+    setIsModalOpenSelectCategory(false);
   };
 
   const handleFormSubmit = async (formData) => {
@@ -133,6 +150,12 @@ const FormationsPage = () => {
     setIsModalOpenSelect(true);
   }
 
+  const selectCategory = (formationId) => {
+
+    setFormationId(formationId);
+    setIsModalOpenSelectCategory(true);
+  }
+
   const sendFeedbackRequest = (formationId) => {
     console.log('send feedback request', formationId);
     FormationService.sendFeedbackFormMail(formationId)
@@ -140,6 +163,7 @@ const FormationsPage = () => {
 
   let actions = [
     { name: "Assign Formateur", action: selectFornateur },
+    { name: "Assign Category", action: selectCategory },
     { name: "Send Feedback Request", action: sendFeedbackRequest },
   ];
 
@@ -154,6 +178,19 @@ const FormationsPage = () => {
       console.log(error);
     })
   }
+
+  const AssignCategory =  (categoryId)=>{
+    FormationService.assignCategory(formationId, categoryId)
+    .then(()=>{
+      setIsModalOpenSelectCategory(false);
+      // const updatedFormations =   FormationService.getAllFormations();
+      // setFormations(updatedFormations);
+    })
+    .catch(error=>{
+      console.log(error);
+    })
+  }
+
 
   return (
     <div>
@@ -190,6 +227,13 @@ const FormationsPage = () => {
           style={{ width: '500px' }}
           handleClose={handleFormCloseSelect}
           AssignFormateur={AssignFormateur}
+        />
+        <ModalSelectCategory
+          open={isModalOpenSelectCategory}
+          onClose={handleFormCloseSelectCategory}
+          style={{ width: '500px' }}
+          handleClose={handleFormCloseSelectCategory}
+          AssignCategory={AssignCategory}
         />
       <div>
         <Paper sx={{ overflow: 'hidden', m: 2, marginTop: "100px" }}>

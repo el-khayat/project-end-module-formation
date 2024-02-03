@@ -2,7 +2,7 @@ import React from 'react'
 import { Avatar, Box, Button, IconButton, Menu, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip, Typography } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const TableComponent = ({ data, columns, handleUpdate, handleDelete, actions,setIsConfirmDeleteModalOpen }) => {
+const TableComponent = ({ data, columns, handleUpdate, handleDelete, actions, setIsConfirmDeleteModalOpen }) => {
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -96,11 +96,11 @@ const TableComponent = ({ data, columns, handleUpdate, handleDelete, actions,set
                             vertical: 'top',
                             horizontal: 'left',
                           }}
-                          
+
                         >
 
                           <MenuItem >
-                            <Button variant='outlined' sx={{ my: 0.1,width:200 }}
+                            <Button variant='outlined' sx={{ my: 0.1, width: 200 }}
                               onClick={() => handleUpdate(row)}
                             >
                               Update
@@ -108,14 +108,14 @@ const TableComponent = ({ data, columns, handleUpdate, handleDelete, actions,set
                           </MenuItem>
 
                           <MenuItem >
-                            <Button variant='outlined' sx={{ my: 0.1,width:200 }} color="error"
+                            <Button variant='outlined' sx={{ my: 0.1, width: 200 }} color="error"
                               onClick={() => handleDelete(row.id)} >
                               Delete
                             </Button>
                           </MenuItem>
 
                           <MenuItem >
-                            <Button variant='outlined' sx={{ my: 0.1,width:200 }}
+                            <Button variant='outlined' sx={{ my: 0.1, width: 200 }}
                               onClick={() => { actions[0].action(row.id) }}>
                               {actions[0].name}
                             </Button>
@@ -123,12 +123,20 @@ const TableComponent = ({ data, columns, handleUpdate, handleDelete, actions,set
 
 
                           <MenuItem >
-                          <Button variant='outlined' sx={{ my: 0.1,width:200 }} 
-                        onClick={() => { actions[1].action(row.id) }} >
-                         {actions[1].name}
-                      </Button>
-                         
-                          
+                            <Button variant='outlined' sx={{ my: 0.1, width: 200 }}
+                              onClick={() => { actions[1].action(row.id) }} >
+                              {actions[1].name}
+                            </Button>
+
+
+                          </MenuItem>
+                          <MenuItem >
+                            <Button variant='outlined' sx={{ my: 0.1, width: 200 }}
+                              onClick={() => { actions[2].action(row.id) }} >
+                              {actions[2].name}
+                            </Button>
+
+
                           </MenuItem>
                         </Menu>
                       </div>
