@@ -24,8 +24,7 @@ const FormationService = {
   createFormation: async (formationData) => {
     try {
       const token = localStorage.getItem('token');
-      console.log(formationData.image.name);
-  
+
       const formData = new FormData();
       formData.append('numberHours', formationData.numberHours);
       formData.append('price', formationData.price);
@@ -33,14 +32,15 @@ const FormationService = {
       formData.append('subject', formationData.subject);
       formData.append('city', formationData.city);
       formData.append('date', formationData.date);
+      formData.append('totalMembers', formationData.totalMembers);
       formData.append('selectedFormateur', formationData.selectedFormateur);
       formData.append('image', formationData.image);
-      console.log(formData.get("selectedFormateur"));
-      console.log(formationData.selectedFormateur);
+      
+      console.log(formData.get("image"));
       const response = await axios.post(`${BASE_URL}/formation/save`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data', 
+          'Content-Type': 'multipart/form-data',
         },
       });
       return response.data;
@@ -52,8 +52,7 @@ const FormationService = {
   updateFormation: async (formationData) => {
     try {
       const token = localStorage.getItem('token');
-      console.log(formationData.image.name);
-  
+
       const formData = new FormData();
       formData.append('numberHours', formationData.numberHours);
       formData.append('price', formationData.price);
@@ -62,14 +61,19 @@ const FormationService = {
       formData.append('city', formationData.city);
       formData.append('date', formationData.date);
       formData.append('selectedFormateur', formationData.selectedFormateur);
-      formData.append('image', formationData.image);
+      formData.append('totalMembers', formationData.totalMembers);
       formData.append('id', formationData.id);
       console.log(formData.get("selectedFormateur"));
+
+      if (formationData.image) {
+        formData.append('image', formationData.image);
+      }
+
       console.log(formationData.selectedFormateur);
       const response = await axios.put(`${BASE_URL}/formation/update`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data', 
+          'Content-Type': 'multipart/form-data',
         },
       });
       return response.data;

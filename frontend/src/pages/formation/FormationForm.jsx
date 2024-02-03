@@ -107,23 +107,6 @@ const FormationForm = ({ onSubmit, formToEdit, onClose, availableFormateurs }) =
             sx={{ my: 1, width: '500px' }}
             InputProps={{ style: { fontSize: '16px' } }}
           />
-          <TextField
-            required
-            label="Select Formateur"
-            sx={{ my: 1, width: '500px' }}
-            InputProps={{ style: { fontSize: '16px' } }}
-            select
-            name="selectedFormateur"
-            value={formation.selectedFormateur}
-            onChange={handleChange}
-          >
-            <MenuItem value="">Select Formateur</MenuItem>
-            {availableFormateurs.map((formateur) => (
-              <MenuItem key={formateur.id} value={formateur.id}>
-                {formateur.name} - {formateur.keyword}
-              </MenuItem>
-            ))}
-          </TextField>
           <FormControl sx={{ my: 1, width: '500px' }}>
             <Input
               id="image-upload"
