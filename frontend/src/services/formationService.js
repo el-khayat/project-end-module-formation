@@ -9,9 +9,10 @@ const FormationService = {
       const token = localStorage.getItem('token');
 
       const response = await axios.get(`${BASE_URL}/formation/all`, {
-        headers: { Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json' 
-      },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
       });
       return await response.data;
     } catch (error) {
@@ -23,10 +24,23 @@ const FormationService = {
   createFormation: async (formationData) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${BASE_URL}/formation/save`, formationData, {
+      console.log(formationData.image.name);
+  
+      const formData = new FormData();
+      formData.append('numberHours', formationData.numberHours);
+      formData.append('price', formationData.price);
+      formData.append('descreption', formationData.descreption);
+      formData.append('subject', formationData.subject);
+      formData.append('city', formationData.city);
+      formData.append('date', formationData.date);
+      formData.append('selectedFormateur', formationData.selectedFormateur);
+      formData.append('image', formationData.image);
+      console.log(formData.get("selectedFormateur"));
+      console.log(formationData.selectedFormateur);
+      const response = await axios.post(`${BASE_URL}/formation/save`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data', 
         },
       });
       return response.data;
@@ -38,10 +52,24 @@ const FormationService = {
   updateFormation: async (formationData) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(`${BASE_URL}/formation/update`, formationData, {
+      console.log(formationData.image.name);
+  
+      const formData = new FormData();
+      formData.append('numberHours', formationData.numberHours);
+      formData.append('price', formationData.price);
+      formData.append('descreption', formationData.descreption);
+      formData.append('subject', formationData.subject);
+      formData.append('city', formationData.city);
+      formData.append('date', formationData.date);
+      formData.append('selectedFormateur', formationData.selectedFormateur);
+      formData.append('image', formationData.image);
+      formData.append('id', formationData.id);
+      console.log(formData.get("selectedFormateur"));
+      console.log(formationData.selectedFormateur);
+      const response = await axios.put(`${BASE_URL}/formation/update`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data', 
         },
       });
       return response.data;
@@ -64,10 +92,10 @@ const FormationService = {
       throw error;
     }
   },
-  assignFormateur : async (formationId,formateurId) => {
+  assignFormateur: async (formationId, formateurId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(`${BASE_URL}/formation/assignFormateur/${formationId}/${formateurId}`,{}, {
+      const response = await axios.put(`${BASE_URL}/formation/assignFormateur/${formationId}/${formateurId}`, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -79,12 +107,13 @@ const FormationService = {
       throw error;
     }
   },
-  sendFeedbackFormMail : async (formationId) => {
+  sendFeedbackFormMail: async (formationId) => {
     try {
       const token = localStorage.getItem('token');
       await axios.get(`http://localhost:8080/formation/${formationId}/send-feedback-form`, {
-        headers: { Authorization: `Bearer ${token}`,
-      },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
     } catch (error) {

@@ -24,7 +24,6 @@ const FormationsPage = () => {
   const [elementToDeleteName, setElementToDeleteName] = useState('');
 
 
-
   useEffect(() => {
     FormationService.getAllFormations()
       .then(response => {
