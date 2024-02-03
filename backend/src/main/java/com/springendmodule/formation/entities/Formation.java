@@ -37,6 +37,8 @@ public class Formation implements Serializable {
 	
 	private String descreption;
 	
+	private String path;
+	
 	private String subject;
 	
 	private String city;
