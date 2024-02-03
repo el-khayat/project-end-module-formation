@@ -108,16 +108,20 @@ public class FormationController {
 
 	@PostMapping("/save")
 	public ResponseEntity<FormationDTO> saveFormation(@ModelAttribute FormationDTO formationDTO,
-			@RequestParam("image") MultipartFile image) {
+			@RequestParam(name="image", required = false) MultipartFile image) {
 		try {
 			String imageName = null;
+//			FormationDTO old=formationService.getById(formationDTO.getId());
 
 			if (image != null && !image.isEmpty()) {
 				imageName = saveImage(image);
 				System.out.println("testing image");
-				formationDTO.setPath(imageName);
 			}
+//			} else {
+//				imageName="default.jpg";
+//			}
 
+			formationDTO.setPath(imageName);
 			System.out.println(formationDTO.getUser());
 
 			return new ResponseEntity<>(formationService.save(formationDTO), HttpStatusCode.valueOf(200));
@@ -129,14 +133,17 @@ public class FormationController {
 
 	@PutMapping("/update")
 	public ResponseEntity<FormationDTO> update(@ModelAttribute FormationDTO formationDTO,
-			@RequestParam("image") MultipartFile image) {
+			@RequestParam(name="image", required = false) MultipartFile image) {
 		try {
+			FormationDTO old=formationService.getById(formationDTO.getId());
 			String imageName = null;
 
 			if (image != null && !image.isEmpty()) {
 				imageName = saveImage(image);
 				formationDTO.setPath(imageName);
-				System.out.println("testing image :"+formationDTO.getPath());
+				System.out.println("testing image :" + formationDTO.getPath());
+			}else if(old.getPath()!=null) {
+				formationDTO.setPath(old.getPath());
 			}
 
 			System.out.println(formationDTO.getUser());
