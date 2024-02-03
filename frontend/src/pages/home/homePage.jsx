@@ -12,10 +12,11 @@ const HomeFormationsPage = () => {
   const [formations, setFormations] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formation_id, setformation_id] = useState(null);
+  const [filterPriceRange, setFilterPriceRange] = useState([0, 100000]);
   const [filteredFormations, setFilteredFormations] = useState([]); // New state for filtered formations
   const [filterCity, setFilterCity] = useState('');
   const [filterSubject, setFilterSubject] = useState('');
-  const [filterPriceRange, setFilterPriceRange] = useState([0, 50000]);
+  
   const [cities, setCities] = useState([]);
   const [subjects, setSubjects] = useState([]);
 
@@ -29,13 +30,19 @@ const HomeFormationsPage = () => {
       });
   }, []);
 
-  const handlePriceRangeChange = (event, newValue) => {
-    setFilterPriceRange(newValue);
-  };
   const getMaxPrice = () => {
     const maxPrice = Math.max(...formations.map((formation) => formation.price));
        return maxPrice;
   };
+
+  useEffect(() => {
+    setFilterPriceRange([0, getMaxPrice()]);
+  }, [formations]); // Trigger the effect whenever formations changes
+  
+  const handlePriceRangeChange = (event, newValue) => {
+    setFilterPriceRange(newValue);
+  };
+  
   // Extract unique cities and subjects from formations
   useEffect(() => {
     const uniqueCities = [...new Set(formations.map((formation) => formation.city))];
@@ -45,7 +52,6 @@ const HomeFormationsPage = () => {
   }, [formations]);
 
   useEffect(() => {
-    filterPriceRange[1]= getMaxPrice();
     // Filter formations based on selected criteria
     const filtered = formations.filter((formation) =>
       (filterCity === '' || formation.city === filterCity) &&
