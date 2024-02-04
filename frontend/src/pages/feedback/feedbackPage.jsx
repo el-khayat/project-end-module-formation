@@ -44,27 +44,32 @@ const FeedbackPage = () => {
         }else{
             console.log("Okay you can submit the feedback :"+ exist);
         }
-        queryString = Base64.decode(token)
-        params = new URLSearchParams(queryString);
-        const individualId = params.get('individualId');
-        const formateurId = params.get('formateurId');
-
-        if(!individualId || !formateurId){
+        try{
+            queryString = Base64.decode(token)
+            params = new URLSearchParams(queryString);
+            const individualId = params.get('individualId');
+            const formateurId = params.get('formateurId');
+            
+            if(!individualId || !formateurId){
+                setError(true)
+            }
+            
+            console.log("token is :" + token);
+            console.log("decoded is :" + Base64.decode(token));
+            console.log(individualId); 
+            console.log(formateurId);
+            if(formateurId){
+                
+                const formateur = await UserFormateurService.getFormateurById(formateurId);
+                await setFormateur(formateur);
+            } 
+            if(individualId){
+                const inidiv = await FeedbackService.getIndividualById(individualId);
+                await setIndividual(inidiv);
+            }
+        }catch(e){
             setError(true)
-        }
-
-        console.log("token is :" + token);
-        console.log("decoded is :" + Base64.decode(token));
-        console.log(individualId); 
-        console.log(formateurId);
-        if(formateurId){
-
-            const formateur = await UserFormateurService.getFormateurById(formateurId);
-            await setFormateur(formateur);
-        } 
-        if(individualId){
-        const inidiv = await FeedbackService.getIndividualById(individualId);
-        await setIndividual(inidiv);
+            console.log("Invalid token",e.message)
         }
     }
     useEffect(()=>{

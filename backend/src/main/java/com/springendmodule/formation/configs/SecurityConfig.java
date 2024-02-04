@@ -38,6 +38,7 @@ public class SecurityConfig {
             "/formation/test-mail",
             "/user/{id}",
             "/feedback/exist",
+            "/formateur/{id}",
             "/feedback/save"
            };
     @Autowired
