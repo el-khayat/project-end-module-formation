@@ -45,17 +45,20 @@ const HomeFormationsPage = () => {
   useEffect(() => {
     const uniqueCities = [...new Set(formations.map((formation) => formation.city))];
     const uniqueSubjects = [...new Set(formations.map((formation) => formation.subject))];
-    const uniqueCategories = [...new Set(formations.map((formation) => formation.category?.title))];
     setCities(uniqueCities);
     setSubjects(uniqueSubjects);
-    setCategories(uniqueCategories);
+  }, [formations]);
+
+  useEffect(() => {
+    const uniqueCategories = [...new Set(formations.map((formation) => formation.category?.title))];
+    setCategories(uniqueCategories.filter(Boolean)); // Filter out null values
   }, [formations]);
 
   useEffect(() => {
     const filtered = formations.filter((formation) =>
       (filterCity === '' || formation.city === filterCity) &&
       (filterSubject === '' || formation.subject === filterSubject) &&
-      (filterCategory === '' || formation.category.title === filterCategory) &&
+      (filterCategory === '' || formation.category?.title === filterCategory) &&
       (formation.price >= filterPriceRange[0] && formation.price <= filterPriceRange[1])
     );
     setFilteredFormations(filtered);
