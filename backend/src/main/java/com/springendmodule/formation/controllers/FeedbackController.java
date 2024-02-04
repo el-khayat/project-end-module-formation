@@ -50,26 +50,33 @@ public class FeedbackController {
 	}
 
 	@PostMapping("/save")
-	public FeedbackResponseDTO save(@RequestBody FeedbackCreateDTO feedback) {
-		System.out.println("the comming feedback is : "+feedback);
+	public ResponseEntity<String > save(@RequestBody FeedbackCreateDTO feedback) {
 
 		FeedbackDTO feedbackDTO = new FeedbackDTO ();
 		feedbackDTO.setNote(feedback.getNote());
 		feedbackDTO.setMessage(feedback.getMessage());
 		feedbackDTO.setCode(feedback.getCode());
+
+
+
 		User formateur = userService.getUserById(feedback.getUser());
 		Individual individual = individualService.getIndividualById(feedback.getIndividual());
+
 
 		feedbackDTO.setUser(formateur);
 		feedbackDTO.setIndividual(individual);
 
+
 		formateur.getFeedbacks().add(feedbackMapper.fromFeedbackDTO(feedbackDTO));
 		individual.getFeedbacks().add(feedbackMapper.fromFeedbackDTO(feedbackDTO));
-		userService.updateUser(formateur);
-		individualService.updateIndividual(individual);
 
-		FeedbackDTO feedbackDTO1 = feedbackService.save(feedbackDTO);
-		return feedbackMapper.fromFeedbackDtoToRespnose(feedbackDTO1) ;
+
+		userService.updateUser(formateur);
+
+
+		feedbackService.save(feedbackDTO);
+
+		return new ResponseEntity<String >("feedback added succsesfully",HttpStatusCode.valueOf(200)) ;
 	}
 
 	@PutMapping("/update")
