@@ -33,7 +33,7 @@ public class FormationApplication  implements CommandLineRunner {
 		user.setEmail("admin@gmail.com");
 		user.setPassword("admin");
 		user.setRoles("ADMIN_ROLE");  
-	//	repository.addUser(user);
+		repository.addUser(user);
 		Category category=new Category(Long.valueOf(1),"Devops",null);
 		Category category1=new Category(Long.valueOf(2),"Dev Mobile",null);
 		Category category2=new Category(Long.valueOf(3),"Data Science",null);
